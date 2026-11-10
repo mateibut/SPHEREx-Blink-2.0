@@ -1260,3 +1260,62 @@ body::before {
   .tl-dot.is-current, .btn[aria-pressed="true"], .btn[aria-checked="true"] { outline: 3px solid Highlight; outline-offset: 1px; }
   .btn-primary { border-width: 2px; }
 }
+
+/* =========================================================
+   EDITORIAL (default since the redesign of 10 Nov 2026): off-white ground, anthracite text, NASA red on the PRIMARY action only.
+   No gradient, no glass, no glow; small corners (2-4 px); an editorial bold face for titles, a plain sans for controls, monospace for metadata.
+   --accent is anthracite here, so every hover, selection and focus ring of the page is neutral; --primary is the red, used by .btn-primary alone.
+   Contrast (WCAG AA, checked by scratch/test_theme.mjs): text 16.3:1 and muted text 8.4:1 on the ground, white on the red 5.9:1.
+   ========================================================= */
+[data-theme="editorial"] {
+  color-scheme: light;
+  --bg: #F6F4EF; --bg-2: #ECE9E1; --surface: #FFFFFF; --raised: #F1EFE9; --field: #FFFFFF;
+  --border: #D5D1C7; --control-border: #6B6B70;
+  --text: #1B1B1D; --text-muted: #4A4A4F; --text-faint: #6B6B70;
+  --primary: #C8102E; --primary-hover: #A50D26;
+  --accent: #1B1B1D; --accent-hi: #1B1B1D; --accent-text: #1B1B1D; --accent-rgb: 27 27 29; --on-accent: #FFFFFF;
+  --accent-2: #4A4A4F; --alt-rgb: 74 74 79; --rust: #6B6B70;
+  --warn: #7A4300; --warn-rgb: 122 67 0; --danger: #A50D26; --success: #1D6B38;
+  --bg-rgb: 246 244 239; --surface-rgb: 255 255 255; --text-rgb: 27 27 29;
+  --panel-alpha: 1; --veil-top: 1; --veil-bottom: 1;
+  --radius: 4px; --radius-sm: 2px;
+  --shadow: none;
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-head: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+/* the picture, the charts and the photo banner keep a dark ground (the image is black sky; the chart colours were validated on a dark ground): the Nebula tokens, as in the light theme */
+[data-theme="editorial"] :is(.stage, .chart) {
+  color-scheme: dark;
+  --bg: #0C0919; --bg-2: #130E2B; --surface: #1A1438; --raised: #261D52; --field: #0F0A22; --border: #35295F; --control-border: #7E72B8;
+  --text: #F2EEFF; --text-muted: #BCB3DE; --text-faint: #8D84B8; --accent: #F2EEFF; --accent-hi: #F2EEFF; --accent-text: #F2EEFF; --accent-rgb: 242 238 255; --on-accent: #14081F;
+  --warn: #F5B942; --warn-rgb: 245 185 66; --danger: #FF7C96; --success: #4FD6A0; --bg-rgb: 12 9 25; --surface-rgb: 26 20 56; --text-rgb: 242 238 255;
+  color: var(--text);
+}
+/* no photo, no stars, no glass, no glow */
+[data-theme="editorial"] body::before { background: var(--bg); }
+[data-theme="editorial"] .sky-bg { display: none; }
+[data-theme="editorial"] :is(.panel, .info-box, .hero-nav, .tooltip, .dlg) { backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-theme="editorial"] :is(.btn, .btn-primary, .chip, .mover-item, .overview-item, .discover-item):hover { transform: none; box-shadow: none; }
+[data-theme="editorial"] :is(.btn-primary, .btn-primary:hover:not(:disabled)) { box-shadow: none; }
+/* a field in focus: a solid anthracite outline instead of the coloured glow (found by scratch/a11y_audit.mjs: removing the glow alone left six fields with no focus indicator) */
+[data-theme="editorial"] :is(input, select, textarea):focus { box-shadow: none; outline: 2px solid var(--text); outline-offset: 1px; border-color: var(--text); }
+/* titles: the editorial face, bold; numbers and metadata: monospace */
+[data-theme="editorial"] :is(h1, h2, h3) { font-family: var(--font-head); font-weight: 700; letter-spacing: -.01em; }
+/* buttons: square-ish, a 1 px anthracite border; the PRIMARY action is the only red thing on the page */
+[data-theme="editorial"] .btn { border-radius: var(--radius-sm); background: var(--surface); border-color: var(--text); }
+[data-theme="editorial"] .btn:hover:not(:disabled) { background: var(--bg-2); }
+/* the filled buttons of the sections (Find movers, Find everything, Run...) are anthracite; ONE button is red: the main action of the page, Load images */
+[data-theme="editorial"] .btn-primary { background: var(--text); color: #FFFFFF; border: 1px solid var(--text); }
+[data-theme="editorial"] .btn-primary:hover:not(:disabled) { background: #3A3A3E; border-color: #3A3A3E; }
+[data-theme="editorial"] #load-btn { background: var(--primary); border-color: var(--primary); }
+[data-theme="editorial"] #load-btn:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
+[data-theme="editorial"] :is(.badge, .chip, .mode-switch, .mode-switch span, .theme-switch select, .cite, .tl-pass, select, input[type="text"], input[type="search"], input[type="number"]) { border-radius: var(--radius-sm); }
+[data-theme="editorial"] :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+[data-theme="editorial"] a { text-decoration: underline; text-underline-offset: .15em; }
+[data-theme="editorial"] .panel { border: 1px solid var(--border); }
+/* the banner in the editorial theme: anthracite words on the off-white ground (the old rules print white on the page colour); the scrim behind the top bar is a plain band, not a gradient */
+[data-theme="editorial"] .hero-logo, [data-theme="editorial"] .hero-title, [data-theme="editorial"] .hero-title :is(h1, p, span), [data-theme="editorial"] .hero-tag, [data-theme="editorial"] .hero-nav a { color: var(--text); }
+[data-theme="editorial"] .hero::before { background: var(--bg); height: 4.6rem; }
+[data-theme="editorial"] .hero-cta, [data-theme="editorial"] .hero-cta:hover { color: #FFFFFF; }

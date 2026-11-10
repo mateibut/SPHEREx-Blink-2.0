@@ -7,7 +7,7 @@
 
 ## 0. Before you start
 
-- Open **https://mateibut.github.io/SPHEREx/** (synthetic demo, no install) and keep a second tab with the Planet X demo:
+- Open **https://mateibut.github.io/SPHEREx-Blink-2.0/** (synthetic demo, no install) and keep a second tab with the Planet X demo:
   `?ra=136.5&dec=16.6&fov=30&det=D5` (press *Look for a distant body*).
 - For the real-data part use screenshots or a screen recording of your own machine (backend + `?data=api`): the
   real images are **not** in the repository on purpose.
@@ -116,7 +116,7 @@
 **Before you press record**
 - Window 1280 × 720 or 1920 × 1080, browser zoom 100 %, bookmarks bar hidden, other tabs closed, notifications off (no private names or faces on screen: the rules say no people under 18).
 - Two browser tabs ready: **A** the public synthetic demo, **B** the local app on real data (backend running, restarted after code changes).
-  - A: `https://mateibut.github.io/SPHEREx/`, and the Planet X field `?ra=136.5&dec=16.6&fov=30&det=D5`.
+  - A: `https://mateibut.github.io/SPHEREx-Blink-2.0/`, and the Planet X field `?ra=136.5&dec=16.6&fov=30&det=D5`.
   - B: `?data=api&api=http://localhost:8001&ra=331.0965&dec=-56.8006&fov=5&det=D6` (Epsilon Indi B) and `...&ra=296.40882&dec=-24.04831&fov=5&det=D2` (the asteroid Arosa).
 - Recording tool: your own screen recorder (the app's **Record video** button only records the blink image). Check the audio and that the cursor is visible.
 - Run the whole sequence once without recording; the SkyBoT and SIMBAD calls need the network.

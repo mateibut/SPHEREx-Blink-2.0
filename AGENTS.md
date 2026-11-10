@@ -1,5 +1,14 @@
 # Developing SPHEREx Blink
 
+> **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [docs/MERGE_NOTES.md](docs/MERGE_NOTES.md).
+
+## Rules that apply now (10 Nov 2026; they settle where the two parts below disagree)
+
+1. **The only repository is `mateibut/SPHEREx-Blink-2.0`, branch `main`.** `mateibut/SPHEREx` and `SPHEREx-Blink-3.0` are old: do not push to them.
+2. **Push only after the author's explicit "yes" for that push**, as a plain push (never `--force`, never a rewrite of history, never a branch deletion). Part 1 says "push development to origin": that was the rule of the earlier line; Part 2 says the author pushes. The author's rule wins.
+3. Everything in Part 2's list of rules stays: real or synthetic always labelled; no invented science (every number from a command that can be re-run); no new FITS downloads without a yes; honest tests; real SPHEREx pixels and files are never committed (`backend/data/` is git-ignored).
+4. Change visibility of a repository, delete anything or publish anything new only when the author asks for that exact thing.
+
 Work in this checkout. Push development to origin (SPHEREx-Blink-2.0). Treat upstream (the original SPHEREx project) and blink3 as read-only references. Read docs/CODEX_PROGRESS.md, docs/IMPLEMENTATION_ROADMAP.md and docs/FEATURE_STATUS.md, then verify HEAD and the working tree.
 
 Serve frontend/ over HTTP. Preserve index.html, results.html, query parameters and embedded mode. The default workspace is synthetic. Keep it explicitly labelled. Read docs/VALIDATION.md before changing scientific methods, units, or thresholds.
@@ -8,7 +17,9 @@ Run every scratch/test_*.mjs with Node and run python -m pytest backend -q with 
 
 ---
 
-<!-- Everything below comes from the branch blink-2.0 of mateibut/SPHEREx, a second line of Blink 2.0 work that was merged into this repository on 10 Nov 2026. Where the two halves describe the same thing differently, they describe two different implementations: see docs/MERGE_NOTES.md. -->
+## Part 2: the other line of Blink 2.0 (from the branch blink-2.0 of mateibut/SPHEREx, merged on 10 Nov 2026)
+
+> Everything from here on was written for that line; where it describes something that Part 1 also describes, the two are two implementations, and [docs/MERGE_NOTES.md](docs/MERGE_NOTES.md) says which one the page uses. Numbers in Part 2 were measured with its detector; the cheap ones were re-measured after the merge (VALIDATION section 21).
 
 # AGENTS.md: durable instructions for anyone (human or agent) working on SPHEREx Blink
 

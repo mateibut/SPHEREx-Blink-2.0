@@ -1,5 +1,7 @@
 # Scientific scope
 
+> **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [MERGE_NOTES.md](MERGE_NOTES.md).
+
 The default viewer generates synthetic frames. The results dashboard reads the saved real-data summary. Neither the navigation smoke test nor the offline module checks reproduce those observations.
 
 The imported validation report documents the small field sample, limitations of quick aperture fluxes, and confusion in blind parallax searches. Its targeted Makemake distance fit and its blind recovery experiment answer different questions. Keep their evidence separate. See [the original validation methods and results](VALIDATION.md).
@@ -12,7 +14,9 @@ The backend marks a frame synthetic when its header explicitly identifies a test
 
 ---
 
-<!-- Everything below comes from the branch blink-2.0 of mateibut/SPHEREx, a second line of Blink 2.0 work that was merged into this repository on 10 Nov 2026. Where the two halves describe the same thing differently, they describe two different implementations: see docs/MERGE_NOTES.md. -->
+## Part 2: the other line of Blink 2.0 (from the branch blink-2.0 of mateibut/SPHEREx, merged on 10 Nov 2026)
+
+> Everything from here on was written for that line; where it describes something that Part 1 also describes, the two are two implementations, and [MERGE_NOTES.md](MERGE_NOTES.md) says which one the page uses. Numbers in Part 2 were measured with its detector; the cheap ones were re-measured after the merge (VALIDATION section 21).
 
 # Scientific limitations
 
@@ -157,7 +161,7 @@ A candidate is a lead with its evidence, never a discovery. Nothing this applica
 - The times in BENCHMARKS.md are medians of 3-5 runs on one machine; two runs of the same code differed by 20-25 %. They are for comparing a "before" and an "after" made the same way, not
   absolute figures.
 - The end-to-end test uses the **synthetic** demo only. It shows that the main path works in one browser (Chrome); it does not test real data, the backend, other browsers, a touch screen
-  or a screen reader, and it is a smoke test (15 checks), not a coverage of the page.
+  or a screen reader, and it is a smoke test (18 checks), not a coverage of the page.
 
 ## Spectra
 

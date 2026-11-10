@@ -1,5 +1,7 @@
 # Runtime architecture
 
+> **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [MERGE_NOTES.md](MERGE_NOTES.md).
+
 The static workspace enters through frontend/index.html and js/main.js. The player and feature modules consume frames through js/data/getCutouts.js. js/config.js selects the synthetic source by default or the API source with the data=api query. Results use a separate entry point, js/results.js, and read data/real_results.json.
 
 backend/app.py exposes health, cutouts, photometry and a HiPS relay. Modules under backend/spherex handle observation lookup, FITS data, resampling, flags, stretch and photometry. backend/tests constructs small synthetic FITS frames with known WCS. The scratch directory contains both offline module checks and separate real-data experiments with external input requirements.
@@ -8,7 +10,9 @@ Both HTML pages use frontend/css/styles.css. Results-specific chart and layout r
 
 ---
 
-<!-- Everything below comes from the branch blink-2.0 of mateibut/SPHEREx, a second line of Blink 2.0 work that was merged into this repository on 10 Nov 2026. Where the two halves describe the same thing differently, they describe two different implementations: see docs/MERGE_NOTES.md. -->
+## Part 2: the other line of Blink 2.0 (from the branch blink-2.0 of mateibut/SPHEREx, merged on 10 Nov 2026)
+
+> Everything from here on was written for that line; where it describes something that Part 1 also describes, the two are two implementations, and [MERGE_NOTES.md](MERGE_NOTES.md) says which one the page uses. Numbers in Part 2 were measured with its detector; the cheap ones were re-measured after the merge (VALIDATION section 21).
 
 # Architecture
 
@@ -57,7 +61,7 @@ checked by `validateFrame` in `getCutouts.js`.
 | `readout.js` | what is shown under the pointer: pixel, RA/Dec (the same conversion as a click), offset, value text |
 | `layers.js` | the overlay layers: names, colours (used for drawing and for the colour key), counts |
 | `viewerControls.js` | the DOM side of the viewer (not pure): buttons, drag, pinch, wheel, keys, the readout line, the layer list |
-| `assistant.js` | the explainer (pure): the evidence of a candidate, the sentences of three questions each with its citations, the validator (every number in a sentence must be a cited value), the prompt and the answer parser for an optional language model (none connected) |
+| `assistant.js` | the explainer (pure): the evidence of a candidate, the sentences of four questions each with its citations, the validator (every number in a sentence must be a cited value), the prompt and the answer parser for an optional language model (none connected) |
 | `assistantView.js` | the DOM side of the explainer (not pure): the questions, the sentences with their citation chips, the evidence table; an answer is shown only if the validator passes it |
 | `solarSystem.js` | the planets on a date (Keplerian elements, checked against Horizons), the Earth of the parallax search in ecliptic axes, a body that does not move and the angle it swings through, the two radial scales |
 | `solarSystemView.js` | the DOM side of the simulator (not pure): the SVG view, the date and the range, the table of positions |

@@ -9,6 +9,9 @@ published until the author decides ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 The reference is `main` at `3f1e538` (7 Nov 2026). Status per phase: [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md); feature by feature,
 with what was and was not checked: [docs/FEATURE_STATUS.md](docs/FEATURE_STATUS.md).
 
+### The numbers remade with the merged detector, and the documents tidied (10 Nov 2026)
+- The cheap real-data checks were run again with the detector of this repository after the merge (VALIDATION 21): nothing that sections 10 and 20 concluded changed (empty-copy shares moved by 4 copies of 300 in three fields; the error of a velocity is still too small in Barnard D2 and too large in Barnard D6); the results page (sections 1-6) was regenerated (Epsilon Indi B moved to 0.64, 0.56, 0.50 ″/yr; Barnard unchanged); the chance baselines of the explainer were updated. The injection tables of section 10, the sources of section 14, the Planet X Lab map (16) and the blind Planet X test (12) were NOT re-run. The merged documents now show their two parts, AGENTS.md has the rules that apply now, and the pitch points at the new site.
+
 ### Release-quality checks (10 Nov 2026)
 - `scratch/release_audit.mjs` (CI job `release`): 200 % and 400 % zoom, forced colours, reduced motion, touch on a phone, text spacing. **It found 4 defects** (the layer list and the Solar System date slider stuck out at 320 px; ten controls had no border in forced colours) and they are fixed. Not done: a real phone, a real screen reader, the Pages site on a real network. Item 10 of the ten improvements, partly.
 

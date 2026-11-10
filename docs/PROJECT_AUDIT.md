@@ -1,5 +1,7 @@
 # Imported baseline
 
+> **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [MERGE_NOTES.md](MERGE_NOTES.md).
+
 On 2026-11-08 the outer nasa workspace had an unborn master, no files and no remote. The named Blink 2.0 remote advertised no refs. The development checkout imports the original repository and its history through 3f1e538. The original has validation reports, a CI workflow and application code, but lacked the four requested continuity files.
 
 The last three commits cover real-frame mover calibration and a blind test (3f1e538), the results page and sky-map country readout (0c35bb6), and asteroid and brown-dwarf follow-up (aafd8e0). The results page fetches committed measurements. Opening it does not run the historical experiments.
@@ -8,7 +10,9 @@ Inspection found that the homepage hid its whole navigation below 721 CSS pixels
 
 ---
 
-<!-- Everything below comes from the branch blink-2.0 of mateibut/SPHEREx, a second line of Blink 2.0 work that was merged into this repository on 10 Nov 2026. Where the two halves describe the same thing differently, they describe two different implementations: see docs/MERGE_NOTES.md. -->
+## Part 2: the other line of Blink 2.0 (from the branch blink-2.0 of mateibut/SPHEREx, merged on 10 Nov 2026)
+
+> Everything from here on was written for that line; where it describes something that Part 1 also describes, the two are two implementations, and [MERGE_NOTES.md](MERGE_NOTES.md) says which one the page uses. Numbers in Part 2 were measured with its detector; the cheap ones were re-measured after the merge (VALIDATION section 21).
 
 # Project audit (8 Nov 2026)
 

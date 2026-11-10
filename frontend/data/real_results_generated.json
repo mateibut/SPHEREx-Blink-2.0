@@ -29,7 +29,7 @@
     "passes": 5
    }
   },
-  "note": "Remade from the real images the backend holds on this date; the numbers of 7 Nov (15 images in Barnard D2) are in docs/VALIDATION.md section 2 as they were."
+  "note": "Remade from the real images the backend holds on this date; the table of 7 Nov is in docs/VALIDATION.md section 2 as it was; section 2.1 compares them."
  },
  "summary": {
   "recovered": [6,6],
@@ -56,7 +56,7 @@
     "difference": 0.8,
     "seen": [6,6],
     "sigma": 10,
-    "chanceLines": 0.000008
+    "chanceLines": 0.000006
    },
    {
     "id": "barnard-all",
@@ -66,17 +66,17 @@
     "difference": 0.2,
     "seen": [21,21],
     "sigma": 19,
-    "chanceLines": 2e-30
+    "chanceLines": 1e-30
    },
    {
     "id": "eps-d2",
     "label": "Epsilon Indi B · D2",
     "catalogue": [3.98,-2.47],
-    "measured": [3.59,-1.93],
-    "difference": 0.66,
+    "measured": [3.47,-2.08],
+    "difference": 0.64,
     "seen": [11,11],
-    "sigma": 16,
-    "chanceLines": 5e-15
+    "sigma": 15,
+    "chanceLines": 4e-15
    },
    {
     "id": "eps-d6",
@@ -86,21 +86,21 @@
     "difference": 0.56,
     "seen": [6,6],
     "sigma": 18,
-    "chanceLines": 0.00001
+    "chanceLines": 0.000008
    },
    {
     "id": "eps-all",
     "label": "Epsilon Indi B · D2 + D6",
     "catalogue": [3.98,-2.47],
-    "measured": [3.61,-2.36],
-    "difference": 0.39,
-    "seen": [15,17],
+    "measured": [3.5,-2.35],
+    "difference": 0.5,
+    "seen": [17,17],
     "sigma": 21,
-    "chanceLines": 5e-19
+    "chanceLines": 9e-25
    }
   ],
   "differencePixels": [0.03,0.13],
-  "maxChanceLines": 0.00001,
+  "maxChanceLines": 0.000008,
   "realSupport": [[15,15],[6,6],[21,21],[11,11],[6,6],[17,17]],
   "originalRule": {
    "note": "Epsilon Indi B in D6 with the first version of the rule (a line needs dots in half of the images): the real line and three false ones.",
@@ -170,7 +170,7 @@
    },
    {
     "label": "Image of 00:10 UTC (1.22 µm), at the 19:42 position",
-    "fluxMilliJy": 0.02,
+    "fluxMilliJy": 0.01,
     "err": 0.95
    },
    {

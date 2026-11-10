@@ -92,13 +92,14 @@ candidate is kept only if that number is below 1.
 | Field, detector | Candidates | Catalogue match | Catalogue motion | Measured motion | Difference | Seen in | Significance | Chance lines expected |
 |---|---|---|---|---|---|---|---|---|
 | Barnard's Star, D2 | 1 | Barnard's Star | (−0.80, +10.36) | (−1.03, +10.15) | **0.31 ″/yr** | 15 of 15 | 15 σ | 2e-21 |
-| Barnard's Star, D6 | 1 | Barnard's Star | (−0.80, +10.36) | (−0.25, +9.78) | **0.80 ″/yr** | 6 of 6 | 10 σ | 8e-6 |
-| Barnard's Star, **D2 + D6** | 1 | Barnard's Star | (−0.80, +10.36) | (−0.91, +10.19) | **0.20 ″/yr** | 21 of 21 | 19 σ | 2e-30 |
-| Epsilon Indi B, D2 | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.59, −1.93) | **0.66 ″/yr** | 11 of 11 | 16 σ | 5e-15 |
-| Epsilon Indi B, D6 | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.50, −2.74) | **0.56 ″/yr** | 6 of 6 | 18 σ | 1e-5 |
-| Epsilon Indi B, **D2 + D6** | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.61, −2.36) | **0.39 ″/yr** | 15 of 17 | 21 σ | 5e-19 |
+| Barnard's Star, D6 | 1 | Barnard's Star | (−0.80, +10.36) | (−0.25, +9.78) | **0.80 ″/yr** | 6 of 6 | 10 σ | 6e-6 |
+| Barnard's Star, **D2 + D6** | 1 | Barnard's Star | (−0.80, +10.36) | (−0.91, +10.19) | **0.20 ″/yr** | 21 of 21 | 19 σ | 1e-30 |
+| Epsilon Indi B, D2 | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.47, −2.08) | **0.64 ″/yr** | 11 of 11 | 15 σ | 4e-15 |
+| Epsilon Indi B, D6 | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.50, −2.74) | **0.56 ″/yr** | 6 of 6 | 18 σ | 8e-6 |
+| Epsilon Indi B, **D2 + D6** | 1 | Epsilon Indi B | (+3.98, −2.47) | (+3.50, −2.35) | **0.50 ″/yr** | 17 of 17 | 21 σ | 9e-25 |
 
 - **Barnard's Star: the numbers of 7 Nov are reproduced exactly** (0.31, 0.80, 0.20 ″/yr; 15, 6 and 21 images). Still recovered in every run with no other candidate; both detectors together give the smallest difference for each star; every real line is supported in every image that could be measured; the range is 0.20-0.80 ″/yr (0.03-0.13 pixel per year).
+- **Remade the same day with the merged detector** (the code of the repository SPHEREx-Blink-2.0 after the merge of 10 Nov, with its rule that a flagged peak needs support on good pixels): Barnard is unchanged (0.31, 0.80, 0.20 ″/yr; only the chance-line numbers moved, by a factor of 1.3-2), Epsilon Indi B moved to 0.64, 0.56 and 0.50 ″/yr and its D2 + D6 line is now seen in 17 of 17 images; the Arosa flux in the second image is 0.01 instead of 0.02 mJy. **The two paragraphs below were written for the first numbers** (0.66, 0.56, 0.39; 15 of 17).
 - **Epsilon Indi B differs from the table above** (0.66, 0.56, 0.39 against 0.62, 0.65, 0.53 ″/yr; 16, 18, 21 σ against 8, 7, 11): the significance is the Phase 4 change (15 / 11 / 18 σ on 8 Nov, section 15.3), the motions move by 0.04-0.14 ″/yr with the centre of the field, and the D2 + D6 line is now seen in 15 of 17 images (the search asks for 60 %), not all.
 - **A correction made on the way.** The first run of this command, the same day, gave Barnard D2 **0.61 ″/yr in "18 images"** (and D2 + D6 0.42, the mask 3.56 → 0.61). It was wrong: the backend held **three exposures twice** (the files `..._2.fits` and `..._6.fits`, `..._3` and `..._11`, `..._4` and `..._16`: byte for byte identical, the same sha1), so each of them counted as two measurements in every search, fit and count of images. It was found when the reproducibility bundle (item 3) listed the same image id and the same SHA-256 twice. The backend now skips a file that is an exact copy of one already used and reports it in `/api/health` (`duplicateFiles`): 75 files, **72 frames**. With the copies out, the numbers of 7 Nov come back (15 / 6 / 21 images, **3.72 without the mask**). The 0.61, 0.42 and 3.56 that the page showed for some hours were artefacts of the copies.
 - **What else is affected.** Every real-data result made while those copies were in the set counted Barnard D2 as "18 images" instead of 15: section 10 (the injection and empty-sky calibrations), 14 (every source, support), 16 (the Planet X Lab map) and the Barnard D2 parts of their tables. They were **not re-run** (sections 8 and 9 of the results page are typed from them): see the notice at the head of each of those sections.
@@ -1021,7 +1022,7 @@ The medians, the scatter and the number of measurements are **the same as on 7 N
 | Image | Flux |
 |---|---|
 | Image of 00:10 UTC (1.21 µm), at the 00:10 position | 8.66 ± 0.30 mJy |
-| Image of 00:10 UTC (1.22 µm), at the 19:42 position | 0.02 ± 0.95 mJy |
+| Image of 00:10 UTC (1.22 µm), at the 19:42 position | 0.01 ± 0.95 mJy |
 | Image of 19:42 UTC (1.34 µm), at the 19:42 position | 8.56 ± 1.11 mJy |
 | Image of 19:42 UTC (1.34 µm), at the 00:10 position | not in this cutout |
 
@@ -1053,3 +1054,24 @@ What this says:
 - **The empty-field control agrees with section 10** (same method, a different seed offset): 0, 0, 1, 2, 11 and 13 % of empty copies list a candidate with the default rule, the two bad fields being the two with only 3 survey passes and 6 images. **The "significance" of such a false candidate is not small: up to 143σ** (Barnard D6), 108σ (WISE 0855 D6), 72σ, 57σ. A significance in σ says how far the line is from a still star; it says nothing about whether the line is real. That is what the "chance lines expected" number is for.
 
 Limits: Gaussian fakes with the header's FWHM, not the real PSF; the stars supply their own pointing shifts; no real variable stars or clustering in the empty copies (they are destroyed); 49 × 49 px cutouts of six field-detector pairs; one seed; Barnard D2 de-duplicated (15 images). A found fake counts when its path is within 1.5 px of the truth, which at 4″/yr (0.65 px/yr) lets a chance line near the path pass for it, so the 4″/yr "found" cells say little.
+
+## 21. The same checks, remade with the merged detector (10 Nov 2026, afternoon)
+
+The detector of the repository SPHEREx-Blink-2.0 now has a rule that the earlier branch lacked: a flagged peak is kept only if two other pixels of its wings are good (`hasGoodWing`). Every real-data number of sections 10, 14-16 and 20 was measured before that rule. The cheap ones were run again on the six real field-detector pairs, the real backend on port 8003 (75 files, 72 distinct frames), no download:
+
+- `node scratch/validate_uncertainty_real.mjs --field "<field>" --trials 100 --nulls 300 --seed 1` (6 fields, a few seconds each);
+- `node scratch/calibrate_real.mjs --api http://localhost:8003 --field "<field>" --mode null --nulls 300 --seed 1` (the empty-sky calibration of section 10);
+- `node scratch/make_results.mjs --write` (sections 1-6 of the results page, section 2.1 above).
+
+| Field (images, passes) | Empty copies that list a candidate, before (section 20) | now | Bright fakes inside 1σ, before | now | Beyond 3σ, one axis, before | now |
+|---|---|---|---|---|---|---|
+| Barnard D2 (15, 4) | 0 % (0/300) | 0 % (0/300) | 61 % | 61 % | 13 % | 13 % |
+| Barnard D6 (6, 3) | 11 % (34/300) | **10 % (30/300)** | 82 % | 82 % | 7 % | 7 % |
+| Epsilon Indi B D2 (11, 5) | 0 % (0/300) | 0 % (0/300) | 75 % | 75 % | 8 % | 8 % |
+| Epsilon Indi B D6 (6, 4) | 1 % (4/300) | **3 % (8/300)** | 75 % | **73 %** | 3 % | **4 %** |
+| WISE 0855 D2 (6, 4) | 2 % (6/300) | 2 % (6/300) | 72 % | 72 % | 6 % | 6 % |
+| WISE 0855 D6 (6, 3) | 13 % (40/300) | **12 % (36/300)** | 75 % | 75 % | 1 % | 1 % |
+
+What this says: **nothing of what sections 10 and 20 concluded changes.** The share of empty copies that list a candidate moved by -4, +4 and -4 copies of 300 in the three fields where it moved at all (Barnard D6 34 to 30, Epsilon Indi B D6 4 to 8, WISE 0855 D6 40 to 36); the largest significance of a false candidate is now 84σ (Barnard D6), 86σ (WISE 0855 D6), 72σ and 57σ; the error of a velocity is still too small in Barnard D2 (61 % of bright fakes inside 1σ) and too large in Barnard D6, with heavy tails everywhere. The chance baselines of the explainer (`chanceBaseline.js`) were updated to these numbers. The results page (sections 1-6) moved as written in section 2.1.
+
+**Still not re-run with the merged detector:** the injection-and-recovery tables of section 10 (`calibrate_real.mjs --mode inject`, long), the sources of section 14 (`validate_discovery.mjs`, needs the catalogues), the completeness map of section 16 and the blind Planet X test of section 12 (the parallax fit was refined, and its range is read differently now). Their numbers stand as measured with the earlier detector.

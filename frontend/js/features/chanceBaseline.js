@@ -4,18 +4,18 @@
 // here is estimated or invented, and a number is offered only for the situation it was measured in; anything else says "not measured". Changing a value needs a new measurement
 // (scratch/test_chancebaseline.mjs checks the numbers against docs/VALIDATION.md).
 //
-//   Find movers: scratch/validate_uncertainty_real.mjs --field "<field>" --nulls 300 (VALIDATION 20; the same method as calibrate_real.mjs --mode null, VALIDATION 10): every image of a real
+//   Find movers: scratch/validate_uncertainty_real.mjs --field "<field>" --nulls 300 (VALIDATION 21, remade with the merged detector on 10 Nov 2026; the same method as calibrate_real.mjs --mode null, VALIDATION 10): every image of a real
 //   field is rotated or mirrored and moved at random, independently, so no correspondence is left and any candidate is false by construction. The share of such copies that list at least
 //   one candidate with the app's default rule, by the number of survey passes of the field.
 //   Planet X search: scratch/blind_planet_x.mjs (VALIDATION 12): 8 scrambled copies of 11 real D1 images of 30 arcmin, searched with the LOOSENED options of scratch/real_parallax.mjs.
 
 export const MOVERS_NULLS = [
   { field: "Barnard D2", images: 15, passes: 4, withCandidate: 0, copies: 300 },
-  { field: "Barnard D6", images: 6, passes: 3, withCandidate: 34, copies: 300 },
+  { field: "Barnard D6", images: 6, passes: 3, withCandidate: 30, copies: 300 },
   { field: "Epsilon Indi B D2", images: 11, passes: 5, withCandidate: 0, copies: 300 },
-  { field: "Epsilon Indi B D6", images: 6, passes: 4, withCandidate: 4, copies: 300 },
+  { field: "Epsilon Indi B D6", images: 6, passes: 4, withCandidate: 8, copies: 300 },
   { field: "WISE 0855 D2", images: 6, passes: 4, withCandidate: 6, copies: 300 },
-  { field: "WISE 0855 D6", images: 6, passes: 3, withCandidate: 40, copies: 300 },
+  { field: "WISE 0855 D6", images: 6, passes: 3, withCandidate: 36, copies: 300 },
 ];
 
 export const DISTANT_NULLS = {

@@ -12,13 +12,14 @@ const VALIDATION = readFileSync(new URL("../docs/VALIDATION.md", import.meta.url
 
 // ---------------------------------------------------------------- the numbers are the ones in VALIDATION.md
 {
-  const sec20 = VALIDATION.slice(VALIDATION.indexOf("## 20."));
+  const sec21 = VALIDATION.slice(VALIDATION.indexOf("## 21."));          // the table of section 21 holds the numbers of the merged detector in its "now" column (the 3rd cell)
   const rows = MOVERS_NULLS.map((r) => {
-    const line = sec20.split("\n").find((l) => l.startsWith(`| ${r.field} |`));
-    const m = line && /\| (\*\*)?(\d+) %(\*\*)?(?: \((\d+)\/(\d+)\))? \|$/.exec(line.trim());
-    return { r, line, ok: Boolean(line) && line.includes(`${r.images} (${r.passes})`) && (r.withCandidate === 0 ? / 0 % \(0\/300\) \|$/.test(line.trim()) : new RegExp(`${r.withCandidate}/${r.copies}\\)`).test(line)) };
+    const line = sec21.split(/\r?\n/).find((l) => l.startsWith(`| ${r.field} (${r.images}, ${r.passes}) |`));
+    const cells = line ? line.split("|").map((c) => c.trim()) : [];
+    const now = cells[3] ?? "";
+    return { r, ok: Boolean(line) && now.replaceAll("*", "").endsWith(`(${r.withCandidate}/${r.copies})`) };
   });
-  check("movers: each field's images, passes and number of empty copies that listed a candidate are the ones of the table in VALIDATION 20", rows.every((x) => x.ok), rows.filter((x) => !x.ok).map((x) => x.r.field).join(", "));
+  check("movers: each field's images, passes and number of empty copies that listed a candidate are the ones of the table in VALIDATION 21 (merged detector)", rows.every((x) => x.ok), rows.filter((x) => !x.ok).map((x) => x.r.field).join(", "));
   const sec12 = VALIDATION.slice(VALIDATION.indexOf("## 12."), VALIDATION.indexOf("## 13."));
   const d = DISTANT_NULLS;
   check("distant: 8 empty copies, 27-41 chance candidates, mean 33, 38 in the real run, rms 0.46 against 0.85-1.04 are the numbers of VALIDATION 12",
@@ -29,8 +30,8 @@ const VALIDATION = readFileSync(new URL("../docs/VALIDATION.md", import.meta.url
 // ---------------------------------------------------------------- the lookup
 {
   const p3 = baselineFor({ passes: 3 }), p4 = baselineFor({ passes: 4 }), p5 = baselineFor({ passes: 5 }), p6 = baselineFor({ passes: 6 });
-  check("lookup: 3 passes gives 11.3 to 13.3 % in 2 fields; 4 passes 0 to 2 % in 3 fields; 5 passes 0 % in 1 field", p3.movers.lowPercent === 11.3 && p3.movers.highPercent === 13.3 && p3.movers.fields === 2
-    && p4.movers.lowPercent === 0 && p4.movers.highPercent === 2 && p4.movers.fields === 3 && p5.movers.lowPercent === 0 && p5.movers.highPercent === 0 && p5.movers.fields === 1);
+  check("lookup: 3 passes gives 10 to 12 % in 2 fields; 4 passes 0 to 2.7 % in 3 fields; 5 passes 0 % in 1 field", p3.movers.lowPercent === 10 && p3.movers.highPercent === 12 && p3.movers.fields === 2
+    && p4.movers.lowPercent === 0 && p4.movers.highPercent === 2.7 && p4.movers.fields === 3 && p5.movers.lowPercent === 0 && p5.movers.highPercent === 0 && p5.movers.fields === 1);
   check("lookup: a number of passes that was never measured gives nothing (no number borrowed from another field)", p6.movers === null && baselineFor({ passes: 2 }).movers === null && baselineFor({ passes: NaN }).movers === null);
   check("lookup: the Planet X baseline is offered only for a Planet X candidate", baselineFor({ passes: 4 }).distant === null && baselineFor({ passes: 4, distant: true }).distant === DISTANT_NULLS);
 }
@@ -41,7 +42,7 @@ const mover = { label: "#1", speedArcsecPerYear: 5, vErrPx: 0.01, positionAngleD
 {
   const e = evidenceFromCandidate(mover, CTX(3));
   const sentences = explain("chance", e), check1 = validateSentences(sentences, e), text = sentences.map((s) => s.text).join(" ");
-  check("question: 3 passes: the sentence gives the measured share (11.3 to 13.3 %), the number of fields and copies, the candidate's own chance number, and every number is cited", check1.ok && /2 fields, 300 copies each\), 11\.3 to 13\.3 %/.test(text) && /0\.3/.test(text) && check1.problems.length === 0, text.slice(0, 240));
+  check("question: 3 passes: the sentence gives the measured share (10 to 12 %), the number of fields and copies, the candidate's own chance number, and every number is cited", check1.ok && /2 fields, 300 copies each\), 10 to 12 %/.test(text) && /0\.3/.test(text) && check1.problems.length === 0, text.slice(0, 240));
   check("question: it ends with the caution that the baselines come from a few real fields, and for a non-Planet-X candidate says nothing about Planet X", sentences.some((s) => s.text === CAUTIONS.baseline && s.fixed) && !/Planet X/.test(text));
   const none = explain("chance", evidenceFromCandidate(mover, CTX(6)));
   check("question: a field with a number of passes that was never measured says that no baseline is offered", none.some((s) => s.text === CAUTIONS.noBaseline) && none.every((s) => !/%/.test(s.text)));

@@ -1,5 +1,7 @@
 # Development progress
 
+> **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [MERGE_NOTES.md](MERGE_NOTES.md).
+
 ## 2026-11-08 — Phase 1 navigation milestone
 
 Imported upstream history through 3f1e538 into the SPHEREx-Blink-2.0 development checkout after checking that the named development remote advertised no refs. The reference repository supplied the baseline. This entry starts the Blink 2.0 progress record.
@@ -155,7 +157,9 @@ Verification: all 17 `scratch/test_*.mjs` scripts passed; `python -m pytest back
 
 ---
 
-<!-- Everything below comes from the branch blink-2.0 of mateibut/SPHEREx, a second line of Blink 2.0 work that was merged into this repository on 10 Nov 2026. Where the two halves describe the same thing differently, they describe two different implementations: see docs/MERGE_NOTES.md. -->
+## Part 2: the other line of Blink 2.0 (from the branch blink-2.0 of mateibut/SPHEREx, merged on 10 Nov 2026)
+
+> Everything from here on was written for that line; where it describes something that Part 1 also describes, the two are two implementations, and [MERGE_NOTES.md](MERGE_NOTES.md) says which one the page uses. Numbers in Part 2 were measured with its detector; the cheap ones were re-measured after the merge (VALIDATION section 21).
 
 # Progress: SPHEREx Blink 2.0
 
@@ -206,7 +210,7 @@ Verify what is written here against `git log` and the test commands in `AGENTS.m
 
 - Node: 35 files, all exit 0, **1195** `PASS`, 0 `FAIL` (`test_coords` and `test_mock` print differently and are not counted).
 - Backend: `pytest backend`: **184** passed.
-- Browser: `node scratch/e2e_smoke.mjs` (headless Chrome, synthetic demo): **15 of 15**; with the worker file removed it fails on exactly the two worker checks. It is not in the Node set (it needs a browser).
+- Browser: `node scratch/e2e_smoke.mjs` (headless Chrome, synthetic demo): **18 of 18**; with the worker file removed it fails on exactly the two worker checks. It is not in the Node set (it needs a browser).
 - CI on GitHub: all three jobs of `tests.yml` passed on the pull request (https://github.com/mateibut/SPHEREx/pull/2) for commit `cdc96c5`, run 42711017130 on 10 Nov (read from its log): `node` on Node 20.20.2 (the three golden digests identical to the baseline made on Node 24 / Windows), `backend` on Python 3.14, and the new `e2e` job on Node 22.23.4 (the runner's Chrome found, 12 of 12). GitHub first refused the push of the workflow file (the author's token had no "Workflows" permission); the author fixed the token and the push went through. The logs warn that `actions/checkout@v4` and others target the deprecated Node.js 20; newer majors were not looked up. Not run: Playwright (not used), a real touch screen, browsers other than Chrome, any screen-reader check.
 - Method note: changing `data-theme` from a script in a pane that is not visible freezes the CSS transitions and gives false low-contrast results (light and classic showed 10 "failures" that vanished on a fresh load with `?theme=`).
 

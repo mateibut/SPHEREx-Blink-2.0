@@ -1319,3 +1319,19 @@ body::before {
 [data-theme="editorial"] .hero-logo, [data-theme="editorial"] .hero-title, [data-theme="editorial"] .hero-title :is(h1, p, span), [data-theme="editorial"] .hero-tag, [data-theme="editorial"] .hero-nav a { color: var(--text); }
 [data-theme="editorial"] .hero::before { background: var(--bg); height: 4.6rem; }
 [data-theme="editorial"] .hero-cta, [data-theme="editorial"] .hero-cta:hover { color: #FFFFFF; }
+
+/* ---------- Redesign step 2: navigation and banner, editorial theme (CSS only) ---------- */
+[data-theme="editorial"] .hero { background: var(--bg); min-height: 0; border-bottom: 1px solid var(--text); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-rows: auto 1fr; }
+[data-theme="editorial"] .hero::before { display: none; }
+[data-theme="editorial"] .hero::after { position: static; grid-column: 2; grid-row: 2; min-height: 22rem; transform: none; border-left: 1px solid var(--text); filter: none; z-index: 0; }
+[data-theme="editorial"] .hero-top { grid-column: 1 / -1; border-bottom: 1px solid var(--border); background: var(--bg); }
+[data-theme="editorial"] .hero-title { grid-column: 1; grid-row: 2; width: auto; align-self: center; background: transparent; padding: clamp(1.2rem, 4vw, 3.5rem); }
+[data-theme="editorial"] .hero-eyebrow { font-family: var(--font-mono); color: var(--text-muted); letter-spacing: .12em; }
+[data-theme="editorial"] .hero-credit { background: var(--surface); border: 1px solid var(--border); font-family: var(--font-mono); }
+[data-theme="editorial"] .hero-scroll { display: none; }
+[data-theme="editorial"] .hero-nav a:hover { color: var(--text); text-decoration-thickness: 2px; }
+[data-theme="editorial"] .hero .badge { background: var(--surface); color: var(--text); border: 1px solid var(--text); border-radius: var(--radius-sm); font-family: var(--font-mono); }
+@media (max-width: 860px) {
+  [data-theme="editorial"] .hero { grid-template-columns: minmax(0, 1fr); }
+  [data-theme="editorial"] .hero::after { grid-column: 1; grid-row: 3; min-height: 14rem; border-left: 0; border-top: 1px solid var(--text); }
+}

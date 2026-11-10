@@ -13,8 +13,10 @@
 //   validateSentences()       is every sentence grounded? -> { ok, problems }
 //   promptFor / parseModelAnswer   the two ends of the optional road to a language model
 
-/** Name of this version (written into what it produces). First written 8 Nov 2026. */
-export const VERSION = "assistant-1";
+import { baselineFor } from "./chanceBaseline.js";
+
+/** Name of this version (written into what it produces). First written 8 Nov 2026; assistant-2 on 10 Nov 2026 adds the question "How often does chance do this?" (the measured empty-field baselines of chanceBaseline.js). */
+export const VERSION = "assistant-2";
 
 const isNum = (v) => typeof v === "number" && Number.isFinite(v);
 const item = (label, value, unit = "", source = "") => ({ label, value, unit, source });
@@ -47,6 +49,26 @@ export function evidenceFromCandidate(c, ctx) {
   if (isNum(ctx.fovArcmin)) e["field.fov"] = item("Field of view", ctx.fovArcmin, "′", "the field on screen");
   if (isNum(ctx.images)) e["field.images"] = item("Images of the field", ctx.images, "", "the field on screen");
   if (isNum(ctx.passes)) e["field.passes"] = item("Survey passes", ctx.passes, "", "the field on screen");
+  const base = baselineFor({ passes: ctx.passes, distant: Boolean(c.distant) });
+  if (base.movers) {
+    const b = base.movers, src = `empty-sky copies of the real fields with this number of passes (${b.names}); scratch/validate_uncertainty_real.mjs --nulls 300, VALIDATION 20`;
+    e["baseline.movers.low"] = item("Smallest share of empty copies that list a candidate", b.lowPercent, "%", src);
+    e["baseline.movers.high"] = item("Largest share of empty copies that list a candidate", b.highPercent, "%", src);
+    e["baseline.movers.fields"] = item("Real fields measured with this number of passes", b.fields, "", src);
+    e["baseline.movers.copies"] = item("Empty copies per field", b.copies, "", src);
+  }
+  if (base.distant) {
+    const d = base.distant, src = "scratch/blind_planet_x.mjs, VALIDATION 12 (loosened options of scratch/real_parallax.mjs; 8 empty copies of real images)";
+    e["baseline.distant.low"] = item("Fewest chance candidates in an empty copy", d.low, "", src);
+    e["baseline.distant.high"] = item("Most chance candidates in an empty copy", d.high, "", src);
+    e["baseline.distant.mean"] = item("Mean chance candidates in an empty copy", d.mean, "", src);
+    e["baseline.distant.controls"] = item("Empty copies searched", d.controls, "", src);
+    e["baseline.distant.images"] = item("Real images in each copy", d.images, "", src);
+    e["baseline.distant.real"] = item("Candidates in the real images (a real body was one of them)", d.realRun, "", src);
+    e["baseline.distant.rmsBody"] = item("Fit rms of the real body", d.rmsBody, "px", src);
+    e["baseline.distant.rmsLow"] = item("Smallest fit rms among the 8-dot chance candidates of the copies", d.rmsChanceLow, "px", src);
+    e["baseline.distant.rmsHigh"] = item("Largest fit rms among the 8-dot chance candidates of the copies", d.rmsChanceHigh, "px", src);
+  }
   e["data.real"] = item("Kind of data", ctx.realData ? "real SPHEREx images" : "synthetic demo images", "", "the data source of the page");
   const mc = ctx.models;
   if (mc?.usable) {
@@ -69,6 +91,9 @@ const have = (e, ...ids) => ids.every((id) => id in e);
 
 /** The fixed cautions: no number, no citation needed. */
 export const CAUTIONS = {
+  baseline: "These baselines were measured on a few real fields: they say what chance did there, not what it does in this field, and a candidate that is rarer than the baseline is still a lead.",
+  noDefaultControl: "No empty-field control has been run with the options this search used, so how often chance gives a Planet X candidate with them has not been measured.",
+  noBaseline: "No empty-field control was measured for a field with this number of survey passes, so no chance baseline is offered for it.",
   lead: "A candidate is a lead, not a discovery: it says where to look, and a person has to look.",
   unlabelled: "Nothing here has been confirmed by anything outside this analysis.",
   synthetic: "These are synthetic demo images: the numbers show how the tool works, not what the sky holds.",
@@ -93,6 +118,22 @@ export function explain(kind, e) {
       const known = e["cand.known"].value !== "none found";
       out.push(s(known ? `It matches ${e["cand.known"].value}, a known object, so the search found something that was already catalogued.` : "No catalogued object was found at its place by the search, so it is not explained by what was asked.", ["cand.known"]));
     }
+  } else if (kind === "chance") {
+    if (have(e, "baseline.movers.low", "baseline.movers.high", "baseline.movers.fields", "baseline.movers.copies", "field.passes")) {
+      const lo = e["baseline.movers.low"].value, hi = e["baseline.movers.high"].value, many = e["baseline.movers.fields"].value !== 1;
+      out.push(s(`In empty copies of real fields with ${e["field.passes"].value} survey passes (${e["baseline.movers.fields"].value} field${many ? "s" : ""}, ${e["baseline.movers.copies"].value} copies each), ${lo === hi ? `${lo} %` : `${lo} to ${hi} %`} listed at least one candidate with the default rule.`,
+        ["field.passes", "baseline.movers.fields", "baseline.movers.copies", "baseline.movers.low", "baseline.movers.high"]));
+    } else out.push(s(CAUTIONS.noBaseline, [], { fixed: true }));
+    if (have(e, "cand.chance")) out.push(s(`This candidate's own number of chance lines expected in the whole field is ${small(e["cand.chance"].value)}: the empty-field shares above are the check on that number.`, ["cand.chance"]));
+    if (have(e, "baseline.distant.low", "baseline.distant.high", "baseline.distant.mean", "baseline.distant.controls", "baseline.distant.images", "baseline.distant.real")) {
+      out.push(s(`For a Planet X candidate: with loosened options, ${e["baseline.distant.controls"].value} empty copies of ${e["baseline.distant.images"].value} real images gave ${e["baseline.distant.low"].value} to ${e["baseline.distant.high"].value} chance candidates each (mean ${e["baseline.distant.mean"].value}); the real images gave ${e["baseline.distant.real"].value}.`,
+        ["baseline.distant.controls", "baseline.distant.images", "baseline.distant.low", "baseline.distant.high", "baseline.distant.mean", "baseline.distant.real"]));
+      if (have(e, "baseline.distant.rmsBody", "baseline.distant.rmsLow", "baseline.distant.rmsHigh")) out.push(s(`The one real body had a fit rms of ${e["baseline.distant.rmsBody"].value} px, the chance candidates with as many dots ${e["baseline.distant.rmsLow"].value} to ${e["baseline.distant.rmsHigh"].value} px: a hint from few copies, not a rule.`,
+        ["baseline.distant.rmsBody", "baseline.distant.rmsLow", "baseline.distant.rmsHigh"]));
+      if (have(e, "cand.rms")) out.push(s(`This candidate's dots scatter ${f(e["cand.rms"].value, 2)} px about the line.`, ["cand.rms"]));
+      out.push(s(CAUTIONS.noDefaultControl, [], { fixed: true }));
+    }
+    out.push(s(CAUTIONS.baseline, [], { fixed: true }));
   } else if (kind === "wrong") {
     if (have(e, "cand.chance") && e["cand.chance"].value > 0.001) out.push(s(`It could be chance: the field is expected to make ${small(e["cand.chance"].value)} lines this good by itself.`, ["cand.chance"]));
     if (have(e, "cand.supported", "cand.measurable") && e["cand.supported"].value < 0.8 * e["cand.measurable"].value) out.push(s(`It is present at the predicted place in only ${e["cand.supported"].value} of ${e["cand.measurable"].value} images: a real object usually is in nearly all of them.`, ["cand.supported", "cand.measurable"]));

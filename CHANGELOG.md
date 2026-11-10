@@ -9,6 +9,9 @@ published until the author decides ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 The reference is `main` at `3f1e538` (7 Nov 2026). Status per phase: [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md); feature by feature,
 with what was and was not checked: [docs/FEATURE_STATUS.md](docs/FEATURE_STATUS.md).
 
+### How often does chance do this? (10 Nov 2026)
+- The explainer (section 8) has a fourth question with the measured empty-field baselines next to the candidate (`chanceBaseline.js`, `assistant-2`): shares of empty copies that listed a candidate by number of passes, and for a Planet X candidate the 27-41 chance candidates of 8 empty copies and the fit-rms hint; numbers checked against VALIDATION 12 and 20 by a test. The interpretation panel of the ten improvements (item 9 of the author's list).
+
 ### When a web service fails (10 Nov 2026)
 - `serviceCall.js`: the failure of SIMBAD, SkyBoT, the IRSA survey search and the footprints is named (offline, timeout, busy, refused, unreadable), retried when that can help, limited in time, and the last good answer for the same field stays on screen marked stale; a Retry button, a Cancel button for the survey search. Item 7 of the ten; 8-10 not done.
 

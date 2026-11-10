@@ -123,6 +123,11 @@ A candidate is a lead with its evidence, never a discovery. Nothing this applica
 - The backend now skips a file that is an exact copy of another (same detector, same time, same size, same SHA-1). It does not detect the same exposure saved with different pixels (another cutout, another resampling): two such files would both be used.
 - A **reproducibility bundle** proves that two people have the same *pixels* (a SHA-256 of each image) and the same *settings*; it does not prove the images are the right ones, that the archive product is the one claimed (the backend does not report the IRSA product id: `productId` is null), or that the result is correct. The hash is of the bytes as the backend serves them (float32), so a different backend or resampling gives a different hash. Only *Find movers* is replayed by the script.
 
+## How often chance does it (the explainer's fourth question)
+
+- The baselines are what chance did in **empty copies of six real field-detector pairs** (Find movers, 300 copies each) and in **8 empty copies of one set of 11 real images** (the Planet X search with loosened options). They are offered only for the number of survey passes that was measured (3, 4 or 5) and, for Planet X, only with the statement that the app's own options were not measured. A candidate rarer than the baseline is still a lead; a candidate as common as the baseline is what chance gives.
+- The empty copies destroy real clustering and variable stars, which would add chance lines in the real sky.
+
 ## The error of a velocity (VALIDATION §20)
 
 - The error bar of a candidate's motion is a model: statistical + excess scatter + a systematic floor measured on stars. Tested with fake movers in the real images it is **too small in Barnard D2** (the true velocity inside 1σ for 61 % of bright fakes, 68 % expected), too large in Barnard D6, about right in four fields, and its **tails are heavy** (1-13 % of axes beyond 3σ). Read it as a guide to the size of the error, not as a probability.

@@ -16,7 +16,7 @@ const CTX = { scaleArcsec: 6.14, fieldRa: 269.4462, fieldDec: 4.769, fovArcmin: 
 // ---------------------------------------------------------------- the numbers of a sentence
 check("numbers in a text: decimals, a minus sign (also the typographic one), exponents; digits stuck to letters (D2, 2MASS...) are names, not figures",
   JSON.stringify(numbersIn("10.1″ at −3 and 2.0e-21, 7 of 24; D2 and λ2")) === JSON.stringify([10.1, -3, 2e-21, 7, 24]) && numbersIn("no figures here").length === 0);
-check("version", VERSION === "assistant-1");
+check("version", VERSION === "assistant-2");          // assistant-2: the question "How often does chance do this?" (10 Nov 2026)
 
 // ---------------------------------------------------------------- the evidence
 {

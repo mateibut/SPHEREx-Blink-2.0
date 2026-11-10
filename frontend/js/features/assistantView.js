@@ -3,7 +3,7 @@
 //   const assistant = setupAssistant({ els, getContext });   // getContext() -> { candidate, ctx } for the candidate selected in the list, or null
 //   assistant.refresh();                                     // call it when the selection changes
 //
-// Three questions (why is it a candidate, what could make it wrong, what to check next). The answer is a list of sentences, each followed by the ids of the measured values it is made of; a
+// Four questions (why is it a candidate, what could make it wrong, what to check next, how often an empty field gives one like it: the measured baselines of chanceBaseline.js). The answer is a list of sentences, each followed by the ids of the measured values it is made of; a
 // click on an id marks that value in the table of the evidence. The page runs the validator on every answer and shows it ONLY if it passes: a sentence that is not grounded is never shown.
 // No language model is used, nothing is sent anywhere.
 

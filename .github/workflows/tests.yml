@@ -63,6 +63,17 @@ jobs:
       - name: Audit the page with the keyboard
         run: node scratch/a11y_audit.mjs
 
+  release:
+    name: Zoom, forced colours, reduced motion, touch (headless Chrome)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release-quality checks
+        run: node scratch/release_audit.mjs
+
   backend:
     name: Backend (pytest)
     runs-on: ubuntu-latest

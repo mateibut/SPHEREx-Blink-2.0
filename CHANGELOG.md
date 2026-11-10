@@ -9,6 +9,9 @@ published until the author decides ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 The reference is `main` at `3f1e538` (7 Nov 2026). Status per phase: [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md); feature by feature,
 with what was and was not checked: [docs/FEATURE_STATUS.md](docs/FEATURE_STATUS.md).
 
+### Release-quality checks (10 Nov 2026)
+- `scratch/release_audit.mjs` (CI job `release`): 200 % and 400 % zoom, forced colours, reduced motion, touch on a phone, text spacing. **It found 4 defects** (the layer list and the Solar System date slider stuck out at 320 px; ten controls had no border in forced colours) and they are fixed. Not done: a real phone, a real screen reader, the Pages site on a real network. Item 10 of the ten improvements, partly.
+
 ### How often does chance do this? (10 Nov 2026)
 - The explainer (section 8) has a fourth question with the measured empty-field baselines next to the candidate (`chanceBaseline.js`, `assistant-2`): shares of empty copies that listed a candidate by number of passes, and for a Planet X candidate the 27-41 chance candidates of 8 empty copies and the fit-rms hint; numbers checked against VALIDATION 12 and 20 by a test. The interpretation panel of the ten improvements (item 9 of the author's list).
 

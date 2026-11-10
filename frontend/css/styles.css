@@ -618,9 +618,9 @@ output { font-weight: 600; color: var(--accent); }
 
 /* Layers: what is drawn over the picture, each with its own switch. The key is drawn in the colour used on the canvas, on a dark chip
    (the colours were chosen for the dark picture, not for the page). */
-.layers { max-width: 640px; width: 100%; margin: .8rem auto 0; padding: .5rem .8rem .7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.layers { min-width: 0; max-width: 640px; width: 100%; margin: .8rem auto 0; padding: .5rem .8rem .7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .layers legend { padding: 0 .4rem; font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
-.layer-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: .15rem 1.2rem; font-size: .85rem; }
+.layer-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15.5rem, 100%), 1fr)); gap: .15rem 1.2rem; font-size: .85rem; }
 .layer { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-width: 0; }
 .layer .check { min-width: 0; }
 .layer-name { min-width: 0; overflow-wrap: anywhere; }
@@ -1113,7 +1113,8 @@ body::before {
 .ss-modes legend { padding: 0 .3rem; font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
 .ss-controls, .ss-body-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.2rem; margin: .5rem 0; font-size: .88rem; }
 .ss-controls label, .ss-body-controls label { display: inline-flex; align-items: center; gap: .4rem; }
-.ss-date input[type="range"] { width: min(18rem, 60vw); }
+.ss-date input[type="range"] { width: min(18rem, 60vw); min-width: 0; }
+.ss-controls label, .ss-body-controls label { flex-wrap: wrap; max-width: 100%; }       /* 400 % zoom: the date slider and its value wrap instead of sticking out of a 320 px window */
 .ss-controls output { font-variant-numeric: tabular-nums; min-width: 6.5rem; }
 .ss-body-controls input[type="number"] { width: 6rem; min-height: 1.75rem; }      /* min-height: a target of at least 24 px (WCAG 2.2, 2.5.8); it was 21 px */
 .ss-map { max-width: 640px; margin: .6rem auto; }
@@ -1248,4 +1249,12 @@ body::before {
 @media (min-width: 861px) {
   .layout .textan:has(#ta-out:not([hidden])) { grid-column: 1 / -1; }
   .layout .textan:has(#ta-out:not([hidden])) + .info-aside { grid-column: 1 / -1; position: static; }
+}
+
+/* ---------- Forced colours (Windows high contrast): the system colours replace the backgrounds that made these look like controls, so each needs a border of its own ---------- */
+@media (forced-colors: active) {
+  .btn, .btn-icon, .stage-btn, .panel-toggle, .tl-dot, .cite, .layer-move, select, input[type="text"], input[type="search"], input[type="number"], textarea { border: 1px solid ButtonText; }
+  #blink-canvas, .skymap, .chart { border: 1px solid CanvasText; }
+  .tl-dot.is-current, .btn[aria-pressed="true"], .btn[aria-checked="true"] { outline: 3px solid Highlight; outline-offset: 1px; }
+  .btn-primary { border-width: 2px; }
 }

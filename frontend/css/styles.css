@@ -1231,7 +1231,8 @@ body::before {
 /* ---------- From the other Blink 2.0 line: settings, image display, links to the standalone research pages, the pair of detectors ---------- */
 .workspace-settings, .view-settings { margin: .7rem 0; }
 .workspace-settings label, .view-settings label { display: flex; align-items: center; gap: .6rem; margin: .5rem 0; }
-.workspace-settings select, .view-settings select { width: auto; max-width: 100%; }
+.workspace-settings label, .view-settings label { flex-wrap: wrap; }          /* 400 % zoom: the label text and its select stack instead of sticking out of a 320 px window */
+.workspace-settings select, .view-settings select { width: auto; flex: 1 1 9rem; min-width: 0; max-width: 100%; }
 .view-settings input[type="range"] { width: 10rem; }
 .research-nav { display: flex; gap: .5rem 1rem; flex-wrap: wrap; }
 .research-nav a { color: var(--accent-text); }

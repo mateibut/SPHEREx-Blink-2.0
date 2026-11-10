@@ -83,7 +83,7 @@ export async function fetchCatalogue(ra, dec, fovArcmin, { fetchFn = fetch, time
   try {
     response = await fetchFn(catalogueUrl(ra, dec, fovArcmin), { signal: AbortSignal.timeout(timeoutMs) });
   } catch (err) {
-    throw new Error(`SIMBAD did not answer (${err?.name === "TimeoutError" ? "too slow" : "network"}).`);
+    throw Object.assign(new Error(`SIMBAD did not answer (${err?.name === "TimeoutError" ? "too slow" : "network"}).`), { kind: err?.name === "TimeoutError" ? "timeout" : err?.name === "AbortError" ? "cancelled" : "offline" });          // `kind`: see serviceCall.js failureKind
   }
   if (!response.ok) throw new Error(`SIMBAD answered HTTP ${response.status}.`);
   const text = await response.text();

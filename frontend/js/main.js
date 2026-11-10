@@ -25,6 +25,8 @@ import { fetchSurvey as askSurvey } from "./features/surveyCoverage.js";
 import { setupSolarSystem } from "./features/solarSystemView.js";
 import { setupAssistant } from "./features/assistantView.js";
 import { runTask, isCancelled } from "./features/workerClient.js";
+import { callService, withDetail } from "./features/serviceCall.js";
+import { showServiceNotice, clearServiceNotice } from "./features/serviceNotice.js";
 import { estimateSearch, describeEstimate } from "./features/searchCost.js";
 import { runSearchTask } from "./features/searchTasks.js";
 import { MARK_IDLE, markText } from "./features/workspace.js";
@@ -774,6 +776,8 @@ $("survey-select").addEventListener("change", (e) => sky.setSurvey(e.target.valu
 // ---------------------------------------------------------------
 let catalogueCache = null;         // { key, objects } for the field on screen (successful answers only)
 let catalogueError = "";
+let catalogueOutcome = null;       // what callService (features/serviceCall.js) said the last time: ok, stale, error kind and sentence
+const simbadMemory = new Map();    // the last good SIMBAD answer by field: shown, marked stale, when a later request fails
 
 const catalogueKey = () => `${currentQuery.ra.toFixed(4)},${currentQuery.dec.toFixed(4)},${currentQuery.fov}`;
 
@@ -782,17 +786,14 @@ async function ensureCatalogue() {
   if (dataProvenance() !== "spherex_header" || !currentQuery) return null;
   const key = catalogueKey();
   if (catalogueCache?.key === key) return catalogueCache.objects;
-  try {
-    const objects = await fetchCatalogue(currentQuery.ra, currentQuery.dec, currentQuery.fov);
-    if (!currentQuery || key !== catalogueKey()) return null;        // another field was loaded meanwhile
-    catalogueError = "";
-    catalogueCache = { key, objects };
-    return objects;
-  } catch (err) {
-    console.warn(err);
-    catalogueError = err.message;
-    return null;
-  }
+  const q = currentQuery;
+  const out = await callService({ name: "SIMBAD", key, cache: simbadMemory, timeoutMs: 20000, run: () => fetchCatalogue(q.ra, q.dec, q.fov) });
+  if (!currentQuery || key !== catalogueKey()) return null;        // another field was loaded meanwhile
+  catalogueOutcome = out;
+  if (!out.ok) { console.warn(out.error.cause); catalogueError = withDetail(out.error); return null; }
+  catalogueError = out.stale ? out.error.message : "";
+  if (!out.stale) catalogueCache = { key, objects: out.value };      // a stale answer is shown but not kept as current: Retry asks again
+  return out.value;
 }
 
 /** Draw (or clear) the catalogue overlay for the frames on screen. */
@@ -809,9 +810,10 @@ async function updateCatalogue() {
   if (token !== loadToken || !box.checked) return;
   if (!objects) {
     player.setCatalogue([]);
-    info.textContent = `Could not get the SIMBAD objects${catalogueError ? ` (${catalogueError})` : ""}.`;
+    showServiceNotice(info, { text: `Could not get the SIMBAD objects. ${catalogueError}`, retry: catalogueOutcome?.error?.retriable === false ? null : () => updateCatalogue() });
     return;
   }
+  clearServiceNotice(info);
   const n = player.naturalSize;
   const geo = { ra: currentQuery.ra, dec: currentQuery.dec, n, scaleArcsec: currentFrames[0].pixelScaleArcsec ?? (currentQuery.fov * 60) / n };
   // The test objects already have their own cream "predicted" tracks: do not draw them twice.
@@ -823,6 +825,7 @@ async function updateCatalogue() {
     ? `SIMBAD: ${tracks.length} object${tracks.length === 1 ? "" : "s"} in this field${moving ? `, ${moving} moving more than 1″/yr (with name and path)` : ""}. ` +
       "Each is moved to the date of the image with its catalogue proper motion."
     : "SIMBAD lists no other object in this field (faint infrared stars are often missing from it).";
+  if (catalogueOutcome?.stale) showServiceNotice(info, { text: `${info.textContent} ${catalogueError}`, retry: () => updateCatalogue() });
 }
 $("show-catalogue").addEventListener("change", updateCatalogue);
 
@@ -833,6 +836,8 @@ $("show-catalogue").addEventListener("change", updateCatalogue);
 const skybotCache = new Map();             // answers by field and date (successful ones only)
 let asteroidState = null;                  // { key, perFrame, failures, firstError } for the frames on screen
 let asteroidError = "";
+let asteroidOutcome = null;                // the last answer of callService for SkyBoT
+const skybotMemory = new Map();            // the last good SkyBoT answer by field and images (shown, marked stale, when a later request fails)
 const asteroidKey = () => `${catalogueKey()}|${currentDetector}|${currentFrames.length}`;
 
 /** SkyBoT answers for the images on screen, or null (synthetic data, offline, blocked). Never throws. */
@@ -841,19 +846,16 @@ async function ensureAsteroids(onProgress = () => {}) {
   const key = asteroidKey();
   if (asteroidState?.key === key) return asteroidState;
   const token = loadToken;
-  try {
-    const res = await fetchSkybotForFrames(currentFrames,
-      { ra: currentQuery.ra, dec: currentQuery.dec, fovArcmin: currentQuery.fov },
-      { cache: skybotCache, onProgress, shouldStop: () => token !== loadToken });
-    if (token !== loadToken || !currentQuery || key !== asteroidKey()) return null;        // another field was loaded meanwhile
-    asteroidError = "";
-    asteroidState = { key, ...res };
-    return asteroidState;
-  } catch (err) {
-    console.warn(err);
-    asteroidError = err.message;
-    return null;
-  }
+  const frames = currentFrames, q = currentQuery;
+  const out = await callService({ name: "SkyBoT", key, cache: skybotMemory, retries: 1, timeoutMs: 120000,
+    run: () => fetchSkybotForFrames(frames, { ra: q.ra, dec: q.dec, fovArcmin: q.fov }, { cache: skybotCache, onProgress, shouldStop: () => token !== loadToken }) });
+  if (token !== loadToken || !currentQuery || key !== asteroidKey()) return null;        // another field was loaded meanwhile
+  asteroidOutcome = out;
+  if (!out.ok) { console.warn(out.error.cause); asteroidError = withDetail(out.error); return null; }
+  asteroidError = out.stale ? out.error.message : "";
+  const state = { key, ...out.value };
+  if (!out.stale) asteroidState = state;                       // a stale answer is shown but not kept as current: Retry asks again
+  return state;
 }
 
 /** Draw (or clear) the asteroid overlay for the images on screen. */
@@ -870,9 +872,10 @@ async function updateAsteroids() {
   if (token !== loadToken || !box.checked) return;
   if (!state) {
     player.setAsteroids([]);
-    info.textContent = `Could not get the known asteroids${asteroidError ? ` (${asteroidError})` : ""}.`;
+    showServiceNotice(info, { text: `Could not get the known asteroids. ${asteroidError}`, retry: asteroidOutcome?.error?.retriable === false ? null : () => updateAsteroids() });
     return;
   }
+  clearServiceNotice(info);
   const points = asteroidPoints(state.perFrame, currentGeo());
   player.setAsteroids(points);
   const names = new Set(points.flatMap((list) => (list ?? []).map((a) => a.name)));
@@ -883,6 +886,7 @@ async function updateAsteroids() {
     : state.failures
       ? `SkyBoT lists no known asteroid or comet inside this field on the checked dates.${note}`
       : "SkyBoT lists no known asteroid or comet inside this field on any of these dates.";
+  if (asteroidOutcome?.stale) showServiceNotice(info, { text: `${info.textContent} ${asteroidError}`, retry: () => updateAsteroids() });
 }
 $("show-asteroids").addEventListener("change", updateAsteroids);
 
@@ -1568,7 +1572,7 @@ planetLab = setupPlanetLab({
 setupSkyExplorer({
   els: { refreshBtn: $("sky-refresh-btn"), status: $("sky-status"), mapWrap: $("sky-map-wrap"), map: $("sky-map"), list: $("sky-list"), detail: $("sky-detail") },
   fetchFootprints: async () => {
-    if (DATA_SOURCE !== "api") throw new Error("these images are synthetic: there are no files, so no footprints.");
+    if (DATA_SOURCE !== "api") throw Object.assign(new Error("these images are synthetic: there are no files, so no footprints."), { kind: "refused" });
     const response = await fetch(`${API_BASE}/api/footprints`);
     if (!response.ok) throw new Error(`the backend answered HTTP ${response.status}.`);
     return response.json();
@@ -1610,10 +1614,10 @@ setupBundle({
 
 // Which survey images cover a place (features/surveyCoverage.js, surveyView.js; the backend's /api/survey = a live query of IRSA's table spherex.plane)
 setupSurveySearch({
-  els: { form: $("survey-form"), ra: $("survey-ra"), dec: $("survey-dec"), radius: $("survey-radius"), det: $("survey-det"), limit: $("survey-limit"), button: $("survey-btn"), fieldBtn: $("survey-field-btn"),
+  els: { form: $("survey-form"), ra: $("survey-ra"), dec: $("survey-dec"), radius: $("survey-radius"), det: $("survey-det"), limit: $("survey-limit"), button: $("survey-btn"), cancelBtn: $("survey-cancel-btn"), fieldBtn: $("survey-field-btn"),
     error: $("survey-error"), status: $("survey-status"), result: $("survey-result"), summary: $("survey-summary"), plot: $("survey-plot"), table: $("survey-table"), openBtn: $("survey-open-btn") },
   hasBackend: DATA_SOURCE === "api",
-  fetchSurvey: (params) => askSurvey(API_BASE, params),
+  fetchSurvey: (params, opts) => askSurvey(API_BASE, params, opts),
   currentField: () => currentQuery,
   openField: ({ ra, dec, fov }) => {
     $("ra-input").value = ra.toFixed(4);

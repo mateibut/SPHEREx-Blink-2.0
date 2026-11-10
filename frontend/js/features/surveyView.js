@@ -10,6 +10,8 @@
 
 import { parseRA, parseDec, formatRA, formatDec } from "../coords.js";
 import { planeOffsets, coverage, coverageText, planeRow } from "./surveyCoverage.js";
+import { callService, withDetail } from "./serviceCall.js";
+import { showServiceNotice, clearServiceNotice } from "./serviceNotice.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const svgEl = (tag, attrs = {}, ...kids) => {
@@ -24,6 +26,8 @@ export const NO_BACKEND_TEXT = "Needs the backend (open the page with ?data=api)
 
 export function setupSurveySearch({ els, fetchSurvey, openField, hasBackend, currentField }) {
   let ticket = 0;                                   // a late answer to an earlier search is ignored
+  let controller = null;                            // Cancel aborts the search that is running
+  const memory = new Map();                         // the last good answer for each search (serviceCall.js): shown, marked stale, when asking again fails
 
   function drawPlot(answer, ra, dec, radiusDeg) {
     const radiusArcmin = radiusDeg * 60, shapes = [];
@@ -59,10 +63,21 @@ export function setupSurveySearch({ els, fetchSurvey, openField, hasBackend, cur
     const radiusDeg = Number(els.radius.value), det = els.det.value, limit = Number(els.limit.value), mine = ++ticket;
     els.button.disabled = true;
     clear();
-    els.status.textContent = "Asking IRSA through the backend… (a few seconds; up to a minute if IRSA is slow)";
+    clearServiceNotice(els.status);
+    els.status.textContent = "Asking IRSA through the backend… (a few seconds; up to a minute if IRSA is slow). You can cancel it.";
+    controller = new AbortController();
+    if (els.cancelBtn) els.cancelBtn.hidden = false;
     try {
-      const answer = await fetchSurvey({ ra: raP.deg, dec: decP.deg, radiusDeg, det, limit });
+      const params = { ra: raP.deg, dec: decP.deg, radiusDeg, det, limit };
+      const out = await callService({ name: "The IRSA survey search (through the backend)", key: JSON.stringify(params), cache: memory, signal: controller.signal, retries: 1, timeoutMs: 160000,
+        run: (signal) => fetchSurvey(params, { signal }) });
       if (mine !== ticket) return;
+      if (!out.ok) {
+        if (out.error.kind === "cancelled") { els.status.textContent = "The search was cancelled. Nothing is drawn."; return; }
+        showServiceNotice(els.status, { text: `The search failed. ${withDetail(out.error)} Nothing is drawn in its place.`, retry: out.error.retriable ? () => search() : null });
+        return;
+      }
+      const answer = out.value;
       const c = coverage(answer.planes, raP.deg, decP.deg, { truncated: Boolean(answer.truncated) });
       drawPlot(answer, raP.deg, decP.deg, radiusDeg);
       drawTable(answer, raP.deg, decP.deg);
@@ -72,11 +87,13 @@ export function setupSurveySearch({ els, fetchSurvey, openField, hasBackend, cur
         + `${answer.truncated ? ` The list stops at ${answer.query?.limit ?? limit} images: more exist.` : ""}${answer.skipped ? ` ${answer.skipped} row${answer.skipped === 1 ? "" : "s"} with a footprint that could not be read ${answer.skipped === 1 ? "was" : "were"} left out.` : ""}`;
       els.result.hidden = false;
       els.openBtn.onclick = () => openField({ ra: raP.deg, dec: decP.deg, fov: 5 });
+      if (out.stale) showServiceNotice(els.status, { text: `${els.status.textContent} ${out.error.message}`, retry: () => search() });
     } catch (err) {
       if (mine !== ticket) return;
       els.status.textContent = `The search failed: ${err.message} Nothing is drawn in its place.`;
-    } finally { if (mine === ticket) els.button.disabled = !hasBackend; }
+    } finally { if (mine === ticket) { els.button.disabled = !hasBackend; if (els.cancelBtn) els.cancelBtn.hidden = true; controller = null; } }
   }
+  els.cancelBtn?.addEventListener("click", () => controller?.abort());
 
   els.form.addEventListener("submit", search);
   els.fieldBtn.addEventListener("click", () => {

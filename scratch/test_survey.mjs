@@ -124,8 +124,8 @@ const mk = (detector, mjd, over = {}) => ({ ...REAL, id: `${detector}@${mjd}`, d
   check("button: a position that is not valid is said in words (alert) and nothing is asked", /RA in degrees must be between 0 and 360/.test(els1.error.textContent) && calls.length === 0);
   els1.ra.value = "17h57m47s"; els1.dec.value = "+04 46 08";
   await view.search();
-  check("button: a position typed as hours and degrees is understood, the request carries degrees, and a failing search says so and draws nothing", calls.length === 1 && near(calls[0].ra, 269.4458, 0.001) && near(calls[0].dec, 4.7689, 0.001) && calls[0].radiusDeg === 0.5 && calls[0].limit === 1000
-    && /^The search failed: IRSA did not answer: slow\. Nothing is drawn in its place\.$/.test(els1.status.textContent) && els1.result.hidden === true && els1.button.disabled === false, els1.status.textContent);
+  check("button: a position typed as hours and degrees is understood, the request carries degrees, and a failing search says so and draws nothing (it is asked twice now: the first try and one retry, serviceCall.js)", calls.length === 2 && near(calls[0].ra, 269.4458, 0.001) && near(calls[0].dec, 4.7689, 0.001) && calls[0].radiusDeg === 0.5 && calls[0].limit === 1000
+    && /^The search failed\. .*\(IRSA did not answer: slow\.\) Nothing is drawn in its place\.$/.test(els1.status.textContent) && els1.result.hidden === true && els1.button.disabled === false, els1.status.textContent);
   els1.fieldBtn.listeners.click();
   check("button: 'Use the field on screen' copies the position of the data on screen", els1.ra.value === "10.5000" && els1.dec.value === "-3.2500");
   const els2 = page();
@@ -144,7 +144,7 @@ const mk = (detector, mjd, over = {}) => ({ ...REAL, id: `${detector}@${mjd}`, d
     ids.every((id) => (HTML.match(new RegExp(`id="${id}"`, "g")) || []).length === 1) && HTML.indexOf('id="survey-form"') > HTML.indexOf('id="sky-explorer"') && HTML.indexOf('id="survey-form"') < HTML.indexOf("7. The Solar System")
     && /id="survey-status" role="status" aria-live="polite"/.test(HTML) && /id="survey-error" role="alert"/.test(HTML) && /<button type="submit" class="btn btn-small btn-primary" id="survey-btn">Search IRSA<\/button>/.test(HTML));
   check("page: main.js wires it with the backend address only when the data come from the backend, and through askSurvey (the request of surveyCoverage.js)",
-    /setupSurveySearch\(\{/.test(MAIN) && /hasBackend: DATA_SOURCE === "api"/.test(MAIN) && /fetchSurvey: \(params\) => askSurvey\(API_BASE, params\)/.test(MAIN));
+    /setupSurveySearch\(\{/.test(MAIN) && /hasBackend: DATA_SOURCE === "api"/.test(MAIN) && /fetchSurvey: \(params, opts\) => askSurvey\(API_BASE, params, opts\)/.test(MAIN));
   const code = (f) => read(f).replace(/\/\/.*$/gm, "");
   check("page: the browser never calls IRSA itself (it sends no CORS headers): no IRSA address in the two modules, only the backend's /api/survey",
     !/irsa\.ipac/i.test(code("../frontend/js/features/surveyCoverage.js")) && !/irsa\.ipac/i.test(code("../frontend/js/features/surveyView.js")) && /\/api\/survey\?/.test(code("../frontend/js/features/surveyCoverage.js")));

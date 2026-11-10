@@ -89,7 +89,7 @@ function loadAladin() {
       loadPromise = null;
       const msg = String(err?.message || err);
       throw new Error(msg.includes("WebGL") ? "The sky map needs WebGL2, which this browser does not offer."
-                                            : "Could not load Aladin Lite (offline?).");
+                                            : "Could not load Aladin Lite from cdn.jsdelivr.net (offline, or the address is blocked).");
     });
   return loadPromise;
 }
@@ -165,7 +165,7 @@ export class SkyContext {
     try {
       this.A = await loadAladin();
     } catch (err) {
-      this.statusEl.textContent = err.message;
+      this.statusEl.textContent = `${err.message} Press "Show sky map" to try again.`;
       this.container.hidden = true;
       return;
     }

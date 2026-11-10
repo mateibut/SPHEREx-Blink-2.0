@@ -9,6 +9,9 @@ published until the author decides ([docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 The reference is `main` at `3f1e538` (7 Nov 2026). Status per phase: [docs/IMPLEMENTATION_ROADMAP.md](docs/IMPLEMENTATION_ROADMAP.md); feature by feature,
 with what was and was not checked: [docs/FEATURE_STATUS.md](docs/FEATURE_STATUS.md).
 
+### When a web service fails (10 Nov 2026)
+- `serviceCall.js`: the failure of SIMBAD, SkyBoT, the IRSA survey search and the footprints is named (offline, timeout, busy, refused, unreadable), retried when that can help, limited in time, and the last good answer for the same field stays on screen marked stale; a Retry button, a Cancel button for the survey search. Item 7 of the ten; 8-10 not done.
+
 ### Provenance in every saved picture (10 Nov 2026)
 - **Found:** the saved PNG and the recorded video carried no label. They now print a caption into the image (real, or SYNTHETIC and not an observation, plus field, detector, date, mode); `test_exportlabels.mjs` audits all 13 save points; 17th browser check. Item 6 of the ten; 7-10 not done.
 

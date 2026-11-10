@@ -34,7 +34,7 @@ function loadPlotly() {
     s.src = PLOTLY_URL;
     s.async = true;
     s.onload = () => resolve(window.Plotly);
-    s.onerror = () => { plotlyPromise = null; reject(new Error("Could not load the chart library (offline?).")); };
+    s.onerror = () => { plotlyPromise = null; reject(new Error("Could not load the chart library from cdn.jsdelivr.net (offline, or the address is blocked). Click the picture again to retry.")); };
     document.head.appendChild(s);
   });
   return plotlyPromise;

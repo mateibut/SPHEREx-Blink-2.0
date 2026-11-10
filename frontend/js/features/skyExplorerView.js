@@ -9,6 +9,8 @@
 // what the backend read from the files that exist.
 
 import { formatRA, formatDec } from "../coords.js";
+import { callService, withDetail } from "./serviceCall.js";
+import { showServiceNotice, clearServiceNotice } from "./serviceNotice.js";
 import {
   hammer, inverseHammer, eclipticLine, galacticLine, pathSegments, groupFields, nearestField, fieldText, suggestedFov, fieldOffsets, MAP_HALF_WIDTH, MAP_HALF_HEIGHT,
 } from "./skyExplorer.js";
@@ -25,6 +27,7 @@ const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.crea
 const linePath = (segments) => segments.map((s) => `M${s.map((p) => `${p.x.toFixed(4)},${(-p.y).toFixed(4)}`).join("L")}`).join("");
 
 export function setupSkyExplorer({ els, fetchFootprints, openField }) {
+  const memory = new Map();                          // the last good answer (serviceCall.js): kept on screen, marked stale, when asking again fails
   let fields = [], selected = null;
 
   function drawMap() {
@@ -94,7 +97,14 @@ export function setupSkyExplorer({ els, fetchFootprints, openField }) {
     els.status.textContent = "Reading the footprints of the image files…";
     els.refreshBtn.disabled = true;
     try {
-      const { footprints, note } = await fetchFootprints();
+      const out = await callService({ name: "The backend's list of image footprints", key: "footprints", cache: memory, retries: 1, timeoutMs: 30000, run: () => fetchFootprints() });
+      if (!out.ok) {
+        fields = []; selected = null;
+        els.mapWrap.hidden = true;
+        showServiceNotice(els.status, { text: `No footprints. ${withDetail(out.error)} Nothing is drawn in their place.`, retry: out.error.retriable ? () => load() : null });
+        return;
+      }
+      const { footprints, note } = out.value;
       fields = groupFields(footprints);
       selected = fields.includes(selected) ? selected : null;
       els.status.textContent = fields.length
@@ -102,6 +112,8 @@ export function setupSkyExplorer({ els, fetchFootprints, openField }) {
         : `The backend has no image files, so there is nothing to draw. ${note ?? ""}`.trim();
       els.mapWrap.hidden = !fields.length;
       drawMap(); drawList(); drawDetail();
+      if (out.stale) showServiceNotice(els.status, { text: `${els.status.textContent} ${withDetail(out.error)}`, retry: () => load() });
+      else clearServiceNotice(els.status);
     } catch (err) {
       fields = []; selected = null;
       els.mapWrap.hidden = true;

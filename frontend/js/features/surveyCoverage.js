@@ -119,19 +119,20 @@ export function surveyUrl(apiBase, { ra, dec, radiusDeg, det = "all", limit = LI
 }
 
 /** Ask the backend. Resolves with its answer; rejects with an Error whose message says what went wrong (never a silent empty list). */
-export async function fetchSurvey(apiBase, params, { fetchFn = fetch, timeoutMs = 150000 } = {}) {
+export async function fetchSurvey(apiBase, params, { fetchFn = fetch, timeoutMs = 150000, signal = null } = {}) {
   const checked = checkParams(params);
-  if (!checked.ok) throw new Error(checked.error);
+  if (!checked.ok) throw Object.assign(new Error(checked.error), { kind: "refused" });          // the request itself is wrong: asking again would not help
   let response;
   try {
-    response = await fetchFn(surveyUrl(apiBase, checked.params), { signal: AbortSignal.timeout(timeoutMs) });
+    response = await fetchFn(surveyUrl(apiBase, checked.params), { signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs) });
   } catch (err) {
-    throw new Error(err?.name === "TimeoutError" ? "The backend did not answer in time (IRSA can be slow: try again, or a smaller circle)." : `Cannot reach the backend at ${apiBase} (${err?.message ?? err}).`);
+    throw Object.assign(new Error(err?.name === "TimeoutError" ? "The backend did not answer in time (IRSA can be slow: try again, or a smaller circle)." : `Cannot reach the backend at ${apiBase} (${err?.message ?? err}).`),
+      { kind: err?.name === "TimeoutError" ? "timeout" : err?.name === "AbortError" ? "cancelled" : "offline" });
   }
   if (!response.ok) {
     let detail = "";
     try { detail = (await response.json()).detail ?? ""; } catch { /* not JSON */ }
-    throw new Error(response.status === 502 ? `IRSA did not answer: ${detail || "the backend could not reach it"}.` : `The backend refused the search (HTTP ${response.status})${detail ? `: ${detail}` : ""}.`);
+    throw Object.assign(new Error(response.status === 502 ? `IRSA did not answer: ${detail || "the backend could not reach it"}.` : `The backend refused the search (HTTP ${response.status})${detail ? `: ${detail}` : ""}.`), { status: response.status });
   }
   const answer = await response.json();
   if (!Array.isArray(answer?.planes)) throw new Error("The backend answered with something that is not a list of survey images.");

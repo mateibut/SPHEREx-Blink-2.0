@@ -247,6 +247,22 @@ async function main() {
     const outside = [...external].filter((h) => !ALLOWED_EXTERNAL.has(h));
     check("the synthetic demo asked no host but this server (and the optional web fonts)", outside.length === 0, outside.length ? outside.join(", ") : `fonts only: ${[...external].join(", ") || "none"}`);
 
+    // ------------------------------------------------------------ a service that cannot be reached (after the checks above: this step makes requests fail on purpose)
+    await step("a service that cannot be reached is named, retried, and the page offers Retry; asking again asks again", async () => {
+      await page("Page.navigate", { url: `${base}/index.html?data=api&api=http://127.0.0.1:9` });          // port 9: nothing listens, the connection is refused
+      await waitFor(`document.getElementById("sky-refresh-btn") && !document.getElementById("sky-refresh-btn").disabled`, "the sky explorer button");
+      // the page script may not have attached its handlers yet: press (by script; the button is far down the page) until the status moves
+      for (let i = 0; i < 40 && !(await evaluate(`/^(Reading|No footprints)/.test(document.getElementById("sky-status").textContent)`)); i++) { await evaluate(`document.getElementById("sky-refresh-btn").click(); true`); await sleep(250); }
+      try { await waitFor(`/^No footprints/.test(document.getElementById("sky-status").textContent) && document.querySelector("#sky-status .notice-retry")`, "the failure notice with Retry", 20000); }
+      catch (err) { throw new Error(`${err.message}; the status says: ${await evaluate("document.getElementById(\"sky-status\").textContent")}`); }
+      const first = await text("#sky-status");
+      if (!/could not be reached/.test(first) || !/after 2 tries/.test(first)) throw new Error(`the notice does not say it was unreachable after 2 tries: ${first}`);
+      await evaluate(`window.__asked = 0; const orig = window.fetch; window.fetch = (...a) => { if (String(a[0]).includes("/api/footprints")) window.__asked++; return orig(...a); }; true`);
+      await evaluate(`document.querySelector("#sky-status .notice-retry").click(); true`);
+      await waitFor(`window.__asked >= 1 && document.querySelector("#sky-status .notice-retry")`, "the second answer after Retry", 20000);
+      return `${first.slice(0, 110)}…; Retry asked again (${await evaluate("window.__asked")} requests)`;
+    });
+
     if (KEEP) { console.log("--keep: the browser stays open; press Ctrl+C here to end"); await new Promise(() => {}); }
     ws.close();
   } catch (err) {

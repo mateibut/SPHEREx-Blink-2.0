@@ -67,7 +67,7 @@ export async function fetchSkybot(ra, dec, radiusDeg, mjd, { fetchFn = fetch, ti
   try {
     response = await fetchFn(skybotUrl(ra, dec, radiusDeg, mjd), { signal: AbortSignal.timeout(timeoutMs) });
   } catch (err) {
-    throw new Error(`SkyBoT did not answer (${err?.name === "TimeoutError" ? "too slow" : "network or blocked"}).`);
+    throw Object.assign(new Error(`SkyBoT did not answer (${err?.name === "TimeoutError" ? "too slow" : "network or blocked"}).`), { kind: err?.name === "TimeoutError" ? "timeout" : err?.name === "AbortError" ? "cancelled" : "offline" });
   }
   if (response.status === 204) return [];                      // "no Solar System body in this circle"
   const text = await response.text();

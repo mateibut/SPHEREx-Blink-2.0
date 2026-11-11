@@ -33,7 +33,7 @@ Suggested acknowledgement lines (check the exact wording on each archive's page 
 |---|---|---|
 | **Aladin Lite** v3.6.5 (CDS) | **GPL-3.0** | Loaded unmodified from the jsDelivr CDN when the sky map opens. It is not bundled or redistributed here. Whether a page that loads a GPL library at run time must itself be GPL is a licensing question we have **not** settled; check it before choosing the final licence. |
 | **Plotly.js** (basic bundle) 2.35.2 | MIT | Spectrum and light-curve charts, loaded from jsDelivr on demand. |
-| **Inter**, **Oswald**, **Space Grotesk** | SIL Open Font License 1.1 | Loaded from Google Fonts. |
+| **Inter**, **Oswald**, **Space Grotesk**, **Instrument Serif**, **JetBrains Mono** | SIL Open Font License 1.1 | Loaded from Google Fonts (Instrument Serif: headlines of the Paper theme; JetBrains Mono: labels). Licence per the Google Fonts listing; from memory, not re-checked here. |
 
 ## Software in the backend
 

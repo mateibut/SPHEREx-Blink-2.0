@@ -1413,3 +1413,8 @@ body::before {
   [data-theme="midnight"] .tl-dot::after { content: ""; position: absolute; inset: -10px; }
   [data-theme="midnight"] :is(.panel a, .info a, .hero-nav a) { display: inline-flex; align-items: center; min-height: 44px; }
 }
+
+/* ---------- Midnight: small polish (file picker, results-page links); CSS only ---------- */
+[data-theme="midnight"] input[type="file"]::file-selector-button { background: rgb(255 255 255 / .08); color: var(--text); border: 1px solid var(--control-border); border-radius: 6px; padding: .35rem .8rem; margin-right: .7rem; cursor: pointer; font: inherit; }
+[data-theme="midnight"] input[type="file"]::file-selector-button:hover { background: rgb(255 255 255 / .14); border-color: var(--accent); }
+[data-theme="midnight"] input[type="file"] { border-radius: var(--radius-sm); }

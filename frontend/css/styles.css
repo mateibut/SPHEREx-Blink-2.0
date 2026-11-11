@@ -1286,7 +1286,7 @@ body::before {
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 /* the picture, the charts and the photo banner keep a dark ground (the image is black sky; the chart colours were validated on a dark ground): the Nebula tokens, as in the light theme */
-[data-theme="editorial"] :is(.stage, .chart) {
+:is([data-theme="editorial"], [data-theme="paper"]) :is(.stage, .chart) {
   color-scheme: dark;
   --bg: #0C0919; --bg-2: #130E2B; --surface: #1A1438; --raised: #261D52; --field: #0F0A22; --border: #35295F; --control-border: #7E72B8;
   --text: #F2EEFF; --text-muted: #BCB3DE; --text-faint: #8D84B8; --accent: #F2EEFF; --accent-hi: #F2EEFF; --accent-text: #F2EEFF; --accent-rgb: 242 238 255; --on-accent: #14081F;
@@ -1294,46 +1294,46 @@ body::before {
   color: var(--text);
 }
 /* no photo, no stars, no glass, no glow */
-[data-theme="editorial"] body::before { background: var(--bg); }
-[data-theme="editorial"] .sky-bg { display: none; }
-[data-theme="editorial"] :is(.panel, .info-box, .hero-nav, .tooltip, .dlg) { backdrop-filter: none; -webkit-backdrop-filter: none; }
-[data-theme="editorial"] :is(.btn, .btn-primary, .chip, .mover-item, .overview-item, .discover-item):hover { transform: none; box-shadow: none; }
-[data-theme="editorial"] :is(.btn-primary, .btn-primary:hover:not(:disabled)) { box-shadow: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) body::before { background: var(--bg); }
+:is([data-theme="editorial"], [data-theme="paper"]) .sky-bg { display: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(.panel, .info-box, .hero-nav, .tooltip, .dlg) { backdrop-filter: none; -webkit-backdrop-filter: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(.btn, .btn-primary, .chip, .mover-item, .overview-item, .discover-item):hover { transform: none; box-shadow: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(.btn-primary, .btn-primary:hover:not(:disabled)) { box-shadow: none; }
 /* a field in focus: a solid anthracite outline instead of the coloured glow (found by scratch/a11y_audit.mjs: removing the glow alone left six fields with no focus indicator) */
-[data-theme="editorial"] :is(input, select, textarea):focus { box-shadow: none; outline: 2px solid var(--text); outline-offset: 1px; border-color: var(--text); }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(input, select, textarea):focus { box-shadow: none; outline: 2px solid var(--text); outline-offset: 1px; border-color: var(--text); }
 /* titles: the editorial face, bold; numbers and metadata: monospace */
-[data-theme="editorial"] :is(h1, h2, h3) { font-family: var(--font-head); font-weight: 700; letter-spacing: -.01em; }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(h1, h2, h3) { font-family: var(--font-head); font-weight: 700; letter-spacing: -.01em; }
 /* buttons: square-ish, a 1 px anthracite border; the PRIMARY action is the only red thing on the page */
-[data-theme="editorial"] .btn { border-radius: var(--radius-sm); background: var(--surface); border-color: var(--text); }
-[data-theme="editorial"] .btn:hover:not(:disabled) { background: var(--bg-2); }
+:is([data-theme="editorial"], [data-theme="paper"]) .btn { border-radius: var(--radius-sm); background: var(--surface); border-color: var(--text); }
+:is([data-theme="editorial"], [data-theme="paper"]) .btn:hover:not(:disabled) { background: var(--bg-2); }
 /* the filled buttons of the sections (Find movers, Find everything, Run...) are anthracite; ONE button is red: the main action of the page, Load images */
-[data-theme="editorial"] .btn-primary { background: var(--text); color: #FFFFFF; border: 1px solid var(--text); }
-[data-theme="editorial"] .btn-primary:hover:not(:disabled) { background: #3A3A3E; border-color: #3A3A3E; }
-[data-theme="editorial"] #load-btn { background: var(--primary); border-color: var(--primary); }
-[data-theme="editorial"] #load-btn:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
-[data-theme="editorial"] :is(.badge, .chip, .mode-switch, .mode-switch span, .theme-switch select, .cite, .tl-pass, select, input[type="text"], input[type="search"], input[type="number"]) { border-radius: var(--radius-sm); }
-[data-theme="editorial"] :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
-[data-theme="editorial"] a { text-decoration: underline; text-underline-offset: .15em; }
-[data-theme="editorial"] .panel { border: 1px solid var(--border); }
+:is([data-theme="editorial"], [data-theme="paper"]) .btn-primary { background: var(--text); color: #FFFFFF; border: 1px solid var(--text); }
+:is([data-theme="editorial"], [data-theme="paper"]) .btn-primary:hover:not(:disabled) { background: #3A3A3E; border-color: #3A3A3E; }
+:is([data-theme="editorial"], [data-theme="paper"]) #load-btn { background: var(--primary); border-color: var(--primary); }
+:is([data-theme="editorial"], [data-theme="paper"]) #load-btn:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
+:is([data-theme="editorial"], [data-theme="paper"]) :is(.badge, .chip, .mode-switch, .mode-switch span, .theme-switch select, .cite, .tl-pass, select, input[type="text"], input[type="search"], input[type="number"]) { border-radius: var(--radius-sm); }
+:is([data-theme="editorial"], [data-theme="paper"]) :focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+:is([data-theme="editorial"], [data-theme="paper"]) a { text-decoration: underline; text-underline-offset: .15em; }
+:is([data-theme="editorial"], [data-theme="paper"]) .panel { border: 1px solid var(--border); }
 /* the banner in the editorial theme: anthracite words on the off-white ground (the old rules print white on the page colour); the scrim behind the top bar is a plain band, not a gradient */
-[data-theme="editorial"] .hero-logo, [data-theme="editorial"] .hero-title, [data-theme="editorial"] .hero-title :is(h1, p, span), [data-theme="editorial"] .hero-tag, [data-theme="editorial"] .hero-nav a { color: var(--text); }
-[data-theme="editorial"] .hero::before { background: var(--bg); height: 4.6rem; }
-[data-theme="editorial"] .hero-cta, [data-theme="editorial"] .hero-cta:hover { color: #FFFFFF; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-logo, :is([data-theme="editorial"], [data-theme="paper"]) .hero-title, :is([data-theme="editorial"], [data-theme="paper"]) .hero-title :is(h1, p, span), :is([data-theme="editorial"], [data-theme="paper"]) .hero-tag, :is([data-theme="editorial"], [data-theme="paper"]) .hero-nav a { color: var(--text); }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero::before { background: var(--bg); height: 4.6rem; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-cta, :is([data-theme="editorial"], [data-theme="paper"]) .hero-cta:hover { color: #FFFFFF; }
 
 /* ---------- Redesign step 2: navigation and banner, editorial theme (CSS only) ---------- */
-[data-theme="editorial"] .hero { background: var(--bg); min-height: 0; border-bottom: 1px solid var(--text); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-rows: auto 1fr; }
-[data-theme="editorial"] .hero::before { display: none; }
-[data-theme="editorial"] .hero::after { position: static; grid-column: 2; grid-row: 2; min-height: 22rem; transform: none; border-left: 1px solid var(--text); filter: none; z-index: 0; }
-[data-theme="editorial"] .hero-top { grid-column: 1 / -1; border-bottom: 1px solid var(--border); background: var(--bg); }
-[data-theme="editorial"] .hero-title { grid-column: 1; grid-row: 2; width: auto; align-self: center; background: transparent; padding: clamp(1.2rem, 4vw, 3.5rem); }
-[data-theme="editorial"] .hero-eyebrow { font-family: var(--font-mono); color: var(--text-muted); letter-spacing: .12em; }
-[data-theme="editorial"] .hero-credit { background: var(--surface); border: 1px solid var(--border); font-family: var(--font-mono); }
-[data-theme="editorial"] .hero-scroll { display: none; }
-[data-theme="editorial"] .hero-nav a:hover { color: var(--text); text-decoration-thickness: 2px; }
-[data-theme="editorial"] .hero .badge { background: var(--surface); color: var(--text); border: 1px solid var(--text); border-radius: var(--radius-sm); font-family: var(--font-mono); }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero { background: var(--bg); min-height: 0; border-bottom: 1px solid var(--text); display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-rows: auto 1fr; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero::before { display: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero::after { position: static; grid-column: 2; grid-row: 2; min-height: 22rem; transform: none; border-left: 1px solid var(--text); filter: none; z-index: 0; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-top { grid-column: 1 / -1; border-bottom: 1px solid var(--border); background: var(--bg); }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-title { grid-column: 1; grid-row: 2; width: auto; align-self: center; background: transparent; padding: clamp(1.2rem, 4vw, 3.5rem); }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-eyebrow { font-family: var(--font-mono); color: var(--text-muted); letter-spacing: .12em; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-credit { background: var(--surface); border: 1px solid var(--border); font-family: var(--font-mono); }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-scroll { display: none; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero-nav a:hover { color: var(--text); text-decoration-thickness: 2px; }
+:is([data-theme="editorial"], [data-theme="paper"]) .hero .badge { background: var(--surface); color: var(--text); border: 1px solid var(--text); border-radius: var(--radius-sm); font-family: var(--font-mono); }
 @media (max-width: 860px) {
-  [data-theme="editorial"] .hero { grid-template-columns: minmax(0, 1fr); }
-  [data-theme="editorial"] .hero::after { grid-column: 1; grid-row: 3; min-height: 14rem; border-left: 0; border-top: 1px solid var(--text); }
+  :is([data-theme="editorial"], [data-theme="paper"]) .hero { grid-template-columns: minmax(0, 1fr); }
+  :is([data-theme="editorial"], [data-theme="paper"]) .hero::after { grid-column: 1; grid-row: 3; min-height: 14rem; border-left: 0; border-top: 1px solid var(--text); }
 }
 
 /* =========================================================
@@ -1418,3 +1418,67 @@ body::before {
 [data-theme="midnight"] input[type="file"]::file-selector-button { background: rgb(255 255 255 / .08); color: var(--text); border: 1px solid var(--control-border); border-radius: 6px; padding: .35rem .8rem; margin-right: .7rem; cursor: pointer; font: inherit; }
 [data-theme="midnight"] input[type="file"]::file-selector-button:hover { background: rgb(255 255 255 / .14); border-color: var(--accent); }
 [data-theme="midnight"] input[type="file"] { border-radius: var(--radius-sm); }
+
+/* =========================================================
+   PAPER (default since 11 Nov 2026): the page layout of the reference study ("Blink 3.0"): paper ground with a fine dot grid, large serif headlines, monospace
+   upper-case labels with wide tracking, hairlines instead of shadows, black primary buttons, one signal red for numbering and the active item, amber for the
+   "synthetic" chips. Shares the structural rules of Editorial (no glass, no glow, dark islands for the picture and the charts); the arrangement of the page
+   is in the PAPER sections below. Functions, ids, classes, labels and ARIA are the same as in every theme: labels are only DISPLAYED upper-case (text-transform).
+   Contrast (scratch/test_theme.mjs): text 17:1, muted 7.5:1, the signal red on paper 5.0:1 (the reference's #E63946 is 4.0:1 and fails AA for small text).
+   ========================================================= */
+[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #FBFBF9; --bg-2: #F4F4EF; --surface: #FFFFFF; --raised: #F4F4EF; --field: #FFFFFF;
+  --border: rgb(18 19 22 / .12); --control-border: #6F7586;
+  --text: #121316; --text-muted: #525866; --text-faint: #6B7280;
+  --primary: #121316; --primary-hover: #2B2D33;
+  --accent: #121316; --accent-hi: #121316; --accent-text: #C42A37; --accent-rgb: 18 19 22; --on-accent: #FFFFFF;
+  --signal: #C42A37;
+  --accent-2: #525866; --alt-rgb: 82 88 102; --rust: #6B7280;
+  --warn: #8A5200; --warn-rgb: 138 82 0; --danger: #B3261E; --success: #1D6B38;
+  --bg-rgb: 251 251 249; --surface-rgb: 255 255 255; --text-rgb: 18 19 22;
+  --panel-alpha: 1; --veil-top: 1; --veil-bottom: 1;
+  --radius: 2px; --radius-sm: 2px;
+  --shadow: none;
+  --display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-head: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+:is([data-theme="paper"]) :is(.stage, .chart) { --bg: #0B0F19; --field: #0B0F19; }
+/* paper ground with a fine dot grid */
+[data-theme="paper"] body::before { background: var(--bg) radial-gradient(rgb(18 19 22 / .13) 1px, transparent 1px) 0 0 / 22px 22px; }
+/* type: serif headlines, light and large; labels in monospace capitals */
+[data-theme="paper"] :is(h1, h2, h3) { font-family: var(--font-head); font-weight: 400; letter-spacing: -.01em; text-wrap: balance; line-height: 1.08; }
+[data-theme="paper"] h2 { font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.6rem); }
+[data-theme="paper"] h3 { font-size: clamp(1.25rem, 1.05rem + .6vw, 1.6rem); }
+[data-theme="paper"] :is(.badge, .chip, .cite, .tl-pass, .hero-eyebrow, .hero-credit, .foot-h, .hero-nav a, label > span:first-child, .field-label, th, summary) { font-family: var(--font-mono); }
+[data-theme="paper"] :is(.hero-eyebrow, .foot-h, .hero-credit, .badge, .hero-nav a) { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; }
+[data-theme="paper"] .hero-eyebrow { color: var(--signal); }
+[data-theme="paper"] :is(.btn, .btn-primary, .hero-cta) { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; border-radius: 0; }
+/* buttons: black rectangles; the secondary ones are outlined */
+[data-theme="paper"] .btn { background: var(--surface); border: 1px solid var(--text); color: var(--text); }
+[data-theme="paper"] .btn:hover:not(:disabled) { background: var(--bg-2); }
+[data-theme="paper"] :is(.btn-primary, #load-btn) { background: var(--text); border-color: var(--text); color: #FFFFFF; }
+[data-theme="paper"] :is(.btn-primary, #load-btn):hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
+[data-theme="paper"] :focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+[data-theme="paper"] :is(input, select, textarea):focus { outline: 2px solid var(--signal); border-color: var(--text); }
+/* the top bar: white, one hairline, logo left, numbered links, the data-source chip in amber */
+[data-theme="paper"] .hero-top { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 clamp(1rem, 3vw, 2.5rem); min-height: 4.6rem; gap: 1.2rem; }
+[data-theme="paper"] .hero-logo { font-family: var(--font-head); font-size: 1.45rem; letter-spacing: 0; text-decoration: none; }
+[data-theme="paper"] .hero-nav { background: transparent; border: 0; counter-reset: nav; gap: .2rem 1.6rem; }
+[data-theme="paper"] .hero-nav a { text-decoration: none; color: var(--text-muted); padding: .4rem 0; }
+[data-theme="paper"] .hero-nav a::before { counter-increment: nav; content: "0" counter(nav) "  " / ""; color: var(--text-faint); }
+[data-theme="paper"] .hero-nav a:hover { color: var(--signal); background: transparent; text-decoration: none; }
+[data-theme="paper"] .hero .badge, [data-theme="paper"] #data-source-badge { background: #FFF6E5; color: var(--warn); border: 1px solid #E8C27A; border-radius: 0; }
+[data-theme="paper"] .theme-switch select { font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; border-radius: 0; }
+/* the footer: three columns, a hairline above, the detector colour strip below (decorative) */
+[data-theme="paper"] .site-footer { text-align: left; background: var(--bg-2); border-top: 1px solid var(--border); padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2.5rem) 2rem; margin-top: 3rem; color: var(--text-muted); font-size: .95rem; }
+[data-theme="paper"] .foot-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr); gap: 2.5rem; max-width: 90rem; margin: 0 auto; }
+[data-theme="paper"] .foot-brand p { max-width: 34ch; margin: 1rem 0 0; }
+[data-theme="paper"] .foot-h { color: var(--text); margin: 0 0 1rem; }
+[data-theme="paper"] .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+[data-theme="paper"] .foot-col a { color: var(--text-muted); text-decoration: none; font-family: var(--font-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+[data-theme="paper"] .foot-col a:hover { color: var(--signal); }
+[data-theme="paper"] .foot-bar { max-width: 90rem; margin: 2.5rem auto 0; height: 6px; background: linear-gradient(90deg, #7A7A85, #3C1252 22%, #8E2455 40%, #E9A070 62%, #FBE9A0); }
+@media (max-width: 860px) { [data-theme="paper"] .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; } }

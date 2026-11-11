@@ -2,10 +2,10 @@
 // (the module used by index.html and results.html), so a theme chosen on one page is the theme of all of them. This is a plain script, not a module: it runs before the first paint.
 (() => {
   const palettes = new Map([
-    ["midnight", "Midnight (navy)"], ["editorial", "Editorial (light)"], ["nebula", "Nebula (violet)"], ["deep-space", "Deep Space"], ["observatory", "Observatory"], ["light", "Light research"], ["classic", "Classic (teal)"],
+    ["paper", "Paper (light)"], ["midnight", "Midnight (navy)"], ["editorial", "Editorial (light)"], ["nebula", "Nebula (violet)"], ["deep-space", "Deep Space"], ["observatory", "Observatory"], ["light", "Light research"], ["classic", "Classic (teal)"],
   ]);
   const key = "spherex-blink-theme";
-  const fallback = "midnight";
+  const fallback = "paper";
   function apply(value) {
     const theme = palettes.has(value) ? value : fallback;
     document.documentElement.dataset.theme = theme;

@@ -1529,3 +1529,26 @@ body::before {
 [data-theme="paper"] .chip, [data-theme="paper"] .tl-pass { border-radius: 999px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
 [data-theme="paper"] input[type="range"] { accent-color: var(--signal); }
 [data-theme="paper"] :is(.player-controls, .frame-info, .frame-date) { font-family: var(--font-mono); }
+
+/* ---------- PAPER step 4: the other pages (Results, Planet X Lab, Sky Explorer, Simulator): same top bar, wide measure, huge serif titles, mono tables (CSS only) ---------- */
+[data-theme="paper"] .rhead { max-width: none; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 clamp(1rem, 3vw, 2.5rem); min-height: 4.6rem; counter-reset: nav; }
+[data-theme="paper"] .rhead-logo { font-family: var(--font-head); font-weight: 400; font-size: 1.45rem; text-decoration: none; }
+[data-theme="paper"] .rhead nav a { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+[data-theme="paper"] .rhead nav a:hover { color: var(--signal); text-decoration: none; }
+[data-theme="paper"] .explore { max-width: 90rem; padding-top: 0; }
+[data-theme="paper"] .explore header { background: var(--surface); border-bottom: 1px solid var(--border); margin: 0 calc(-1 * clamp(.8rem, 3vw, 2rem)) 2.5rem; padding: 0 clamp(.8rem, 3vw, 2rem); min-height: 4.6rem; }
+[data-theme="paper"] .explore header nav a { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; }
+[data-theme="paper"] .explore header nav a:first-child { font-family: var(--font-head); font-size: 1.4rem; letter-spacing: 0; text-transform: none; color: var(--text); }
+[data-theme="paper"] .explore header nav a:hover { color: var(--signal); }
+[data-theme="paper"] .explore h1, [data-theme="paper"] .rintro h1, [data-theme="paper"] .rmain h1 { font-family: var(--font-head); font-weight: 400; font-size: clamp(2.6rem, 1.6rem + 4.5vw, 6rem); line-height: .98; letter-spacing: -.02em; }
+[data-theme="paper"] .rmain { max-width: 90rem; }
+[data-theme="paper"] .rintro h2::after { background: var(--signal); height: 2px; }
+[data-theme="paper"] .result-links { counter-reset: nav; display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; }
+[data-theme="paper"] .result-links a { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--text-muted); }
+[data-theme="paper"] .result-links a::before { counter-increment: nav; content: "0" counter(nav) "  " / ""; color: var(--text-faint); }
+[data-theme="paper"] .result-links a:hover { color: var(--signal); }
+[data-theme="paper"] :is(.rtable, #measure-table, table) th { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); background: var(--bg-2); font-weight: 500; }
+[data-theme="paper"] .explore :is(input, select) { border-radius: 0; }
+[data-theme="paper"] .rnotice { border-left-color: var(--signal); background: #FFF6E5; }
+[data-theme="paper"] .rintro a, [data-theme="paper"] .rsec a, [data-theme="paper"] .explore a { color: var(--text); text-decoration-color: var(--signal); }
+[data-theme="paper"] .explore header nav a, [data-theme="paper"] .rhead nav a { text-decoration: none; }

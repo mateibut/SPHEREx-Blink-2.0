@@ -1482,3 +1482,28 @@ body::before {
 [data-theme="paper"] .foot-col a:hover { color: var(--signal); }
 [data-theme="paper"] .foot-bar { max-width: 90rem; margin: 2.5rem auto 0; height: 6px; background: linear-gradient(90deg, #7A7A85, #3C1252 22%, #8E2455 40%, #E9A070 62%, #FBE9A0); }
 @media (max-width: 860px) { [data-theme="paper"] .foot-grid { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; } }
+
+/* ---------- PAPER step 2: the home hero and the information sections (CSS only) ---------- */
+[data-theme="paper"] .hero { background: transparent; border-bottom: 0; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: auto 1fr; overflow: visible; min-height: 0; }
+[data-theme="paper"] .hero-title { padding: clamp(2.5rem, 7vw, 6rem) clamp(1rem, 3vw, 2.5rem) clamp(2rem, 5vw, 4rem); align-self: center; }
+[data-theme="paper"] .hero h1 { font-family: var(--font-head); font-weight: 400; font-size: clamp(3.6rem, 2rem + 7.5vw, 9rem); line-height: .92; letter-spacing: -.025em; margin: .3rem 0 0; }
+[data-theme="paper"] .hero h1 span:last-child::after { content: "."; color: var(--signal); }
+[data-theme="paper"] .hero-tag { font-size: clamp(1.05rem, 1rem + .5vw, 1.35rem); line-height: 1.6; color: var(--text-muted); max-width: 34em; margin-top: 1.6rem; }
+[data-theme="paper"] .hero-cta { background: var(--text); color: #FFFFFF; padding: 1rem 1.6rem; margin-top: 1.8rem; }
+[data-theme="paper"] .hero-cta:hover { background: var(--primary-hover); }
+/* the picture: a square with a hairline frame and a long soft shadow, like the reference's viewer; it is an illustration and the caption says so */
+[data-theme="paper"] .hero::after { position: static; grid-column: 2; grid-row: 2; align-self: center; justify-self: center; width: min(100%, 36rem); min-height: 0; aspect-ratio: 1 / 1; margin: 2rem clamp(1rem, 3vw, 2.5rem) 2rem 0; border: 1px solid var(--text); box-shadow: 0 40px 80px -30px rgb(18 19 22 / .45); background-position: 62% 50%; }
+[data-theme="paper"] .hero-credit { position: static; grid-column: 2; grid-row: 2; align-self: end; justify-self: end; margin: 0 clamp(1rem, 3vw, 2.5rem) 3rem 0; z-index: 2; background: rgb(11 15 25 / .86); color: #E7E9F2; border: 0; padding: .35rem .7rem; }
+@media (max-width: 860px) {
+  [data-theme="paper"] .hero { grid-template-columns: minmax(0, 1fr); }
+  [data-theme="paper"] .hero::after { grid-column: 1; grid-row: 3; width: calc(100% - 2rem); margin: 0 1rem 1.5rem; }
+  [data-theme="paper"] .hero-credit { grid-column: 1; grid-row: 3; margin: 0 1.5rem 2.5rem 0; }
+}
+/* information sections: white cards with a hairline, a numbered mono kicker, serif headings, the steps as a numbered list */
+[data-theme="paper"] .info-box { background: var(--surface); border: 1px solid var(--border); border-radius: 0; padding: clamp(1.4rem, 3vw, 2.6rem); }
+[data-theme="paper"] .info-kicker { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .16em; color: var(--signal); }
+[data-theme="paper"] .info h2 { font-size: clamp(2rem, 1.4rem + 2vw, 3.2rem); }
+[data-theme="paper"] .info-lead { color: var(--text-muted); font-size: 1.05rem; line-height: 1.65; }
+[data-theme="paper"] .steps li::before { font-family: var(--font-mono); color: var(--signal); }
+[data-theme="paper"] .info-cols { border-top: 1px solid var(--border); padding-top: 1.6rem; }
+[data-theme="paper"] .info a { color: var(--text); text-decoration-color: var(--signal); }

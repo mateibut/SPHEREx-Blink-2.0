@@ -1405,13 +1405,13 @@ body::before {
 
 /* ---------- Midnight: touch targets of 44 px (WCAG 2.5.5) on narrow or touch screens; layout only ---------- */
 @media (max-width: 860px), (pointer: coarse) {
-  [data-theme="midnight"] :is(.btn, button, select, summary, .theme-switch select, .hero-nav a, .tl-pass) { min-height: 44px; }
-  [data-theme="midnight"] :is(.btn, button.chip, .tl-pass) { min-width: 44px; }
-  [data-theme="midnight"] :is(input[type="text"], input[type="search"], input[type="number"], input:not([type]), select) { min-height: 44px; }
-  [data-theme="midnight"] label:has(> input[type="checkbox"], > input[type="radio"]) { min-height: 44px; display: flex; align-items: center; gap: .6rem; }
-  [data-theme="midnight"] .tl-dot { position: relative; }
-  [data-theme="midnight"] .tl-dot::after { content: ""; position: absolute; inset: -10px; }
-  [data-theme="midnight"] :is(.panel a, .info a, .hero-nav a) { display: inline-flex; align-items: center; min-height: 44px; }
+  :is([data-theme="midnight"], [data-theme="paper"]) :is(.btn, button, select, summary, .theme-switch select, .hero-nav a, .tl-pass) { min-height: 44px; }
+  :is([data-theme="midnight"], [data-theme="paper"]) :is(.btn, button.chip, .tl-pass) { min-width: 44px; }
+  :is([data-theme="midnight"], [data-theme="paper"]) :is(input[type="text"], input[type="search"], input[type="number"], input:not([type]), select) { min-height: 44px; }
+  :is([data-theme="midnight"], [data-theme="paper"]) label:has(> input[type="checkbox"], > input[type="radio"]) { min-height: 44px; display: flex; align-items: center; gap: .6rem; }
+  :is([data-theme="midnight"], [data-theme="paper"]) .tl-dot { position: relative; }
+  :is([data-theme="midnight"], [data-theme="paper"]) .tl-dot::after { content: ""; position: absolute; inset: -10px; }
+  :is([data-theme="midnight"], [data-theme="paper"]) :is(.panel a, .info a, .hero-nav a) { display: inline-flex; align-items: center; min-height: 44px; }
 }
 
 /* ---------- Midnight: small polish (file picker, results-page links); CSS only ---------- */
@@ -1552,3 +1552,16 @@ body::before {
 [data-theme="paper"] .rnotice { border-left-color: var(--signal); background: #FFF6E5; }
 [data-theme="paper"] .rintro a, [data-theme="paper"] .rsec a, [data-theme="paper"] .explore a { color: var(--text); text-decoration-color: var(--signal); }
 [data-theme="paper"] .explore header nav a, [data-theme="paper"] .rhead nav a { text-decoration: none; }
+
+/* ---------- PAPER step 5: mobile (CSS only) ---------- */
+[data-theme="paper"] :is(.hero-nav a, .result-links a)::before { margin-right: .7em; }
+@media (max-width: 860px) {
+  [data-theme="paper"] .hero-top { padding-block: .7rem; gap: .5rem 1rem; flex-wrap: wrap; }
+  [data-theme="paper"] .hero-nav { order: 5; width: 100%; gap: 0 1.2rem; }
+  [data-theme="paper"] .hero h1 { font-size: clamp(3.2rem, 17vw, 5rem); }
+  [data-theme="paper"] .site-footer { padding-inline: 1rem; }
+}
+@media (max-width: 860px), (pointer: coarse) {
+  [data-theme="paper"] input[type="range"] { min-height: 44px; }
+  [data-theme="paper"] :is(.foot-col a, .research-nav a, .layout a) { display: inline-flex; align-items: center; min-height: 44px; }
+}

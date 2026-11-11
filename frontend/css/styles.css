@@ -1565,3 +1565,33 @@ body::before {
   [data-theme="paper"] input[type="range"] { min-height: 44px; }
   [data-theme="paper"] :is(.foot-col a, .research-nav a, .layout a) { display: inline-flex; align-items: center; min-height: 44px; }
 }
+
+/* ---------- PAPER: the eye-catchers (CSS only, decorative, aria-hidden by nature: pseudo-elements and transforms) ---------- */
+/* 1. the hero picture blinks between two frames and a red ring jumps with the "dot", like the reference's demo. It is the same labelled illustration (not SPHEREx data); it runs
+   3 times (4.8 s) and stops, so nothing moves for longer than 5 s (WCAG 2.2.2), and never under reduced motion. */
+@keyframes paper-blink {
+  0%, 49.9% { background-position: 31% 64%, 62% 50%; }
+  50%, 100% { background-position: 37% 59%, 61% 50%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme="paper"] .hero::after {
+    background-image: radial-gradient(circle, transparent 0 22px, var(--signal) 22px 24.5px, transparent 25px), url("../img/header-nebula-hd.jpg");
+    background-size: 56px 56px, cover; background-repeat: no-repeat;
+    animation: paper-blink 1.6s steps(1, end) 3 .8s both;
+  }
+}
+/* 2. the one strong colour of the page is the main action: Load images, in signal red */
+[data-theme="paper"] #load-btn { background: var(--signal); border-color: var(--signal); color: #FFFFFF; padding-block: .95rem; font-size: .8rem; }
+[data-theme="paper"] #load-btn:hover:not(:disabled) { background: #A3202C; border-color: #A3202C; }
+/* 3. entrance: the hero lines rise one after the other when the page opens; the information cards and the footer rise when they scroll into view (ease-out, small, only transform and opacity) */
+@keyframes paper-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme="paper"] .hero-eyebrow, [data-theme="paper"] .hero h1 span, [data-theme="paper"] .hero-tag, [data-theme="paper"] .hero-cta { animation: paper-rise .7s cubic-bezier(.2, .8, .2, 1) backwards; }
+  [data-theme="paper"] .hero h1 span:nth-child(1) { animation-delay: .08s; }
+  [data-theme="paper"] .hero h1 span:nth-child(2) { animation-delay: .18s; }
+  [data-theme="paper"] .hero-tag { animation-delay: .3s; }
+  [data-theme="paper"] .hero-cta { animation-delay: .4s; }
+  @supports (animation-timeline: view()) {
+    [data-theme="paper"] :is(.info-box, .foot-grid) { animation: paper-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+  }
+}

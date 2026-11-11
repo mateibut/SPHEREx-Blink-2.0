@@ -1507,3 +1507,25 @@ body::before {
 [data-theme="paper"] .steps li::before { font-family: var(--font-mono); color: var(--signal); }
 [data-theme="paper"] .info-cols { border-top: 1px solid var(--border); padding-top: 1.6rem; }
 [data-theme="paper"] .info a { color: var(--text); text-decoration-color: var(--signal); }
+
+/* ---------- PAPER step 3: the workspace (CSS only): three columns separated by hairlines, no cards, metric tiles with mono labels ---------- */
+[data-theme="paper"] .layout { padding-top: 0; }
+[data-theme="paper"] .panel { border-radius: 0; box-shadow: none; background: var(--surface); }
+[data-theme="paper"] .panel h2 { color: var(--text); margin-bottom: 1.1rem; }
+[data-theme="paper"] .panel h3 { color: var(--text-muted); font-family: var(--font-mono); font-weight: 500; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; }
+@media (min-width: 1180px) {
+  [data-theme="paper"] .layout { column-gap: 0; row-gap: 1.5rem; max-width: 1760px; }
+  [data-theme="paper"] .layout > :is(.player, .inspector) { margin-left: -1px; }
+  [data-theme="paper"] .layout > .controls { padding-inline: 1.6rem; }
+}
+/* the tiles of the inspector: a hairline each, the label in monospace capitals, the value in monospace */
+[data-theme="paper"] .meta > div { background: var(--surface); border: 1px solid var(--border); border-radius: 0; padding: .8rem .9rem; }
+[data-theme="paper"] .meta dt { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .14em; color: var(--text-faint); }
+[data-theme="paper"] .meta dd { font-family: var(--font-mono); font-size: .95rem; }
+/* the mode switch (Blink, Difference, Stack, Trail, Compare): one bordered bar, the chosen one filled black */
+[data-theme="paper"] .mode-switch { border-radius: 0; border: 1px solid var(--text); background: var(--surface); }
+[data-theme="paper"] .mode-switch :is(span, label, button) { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; border-radius: 0; }
+[data-theme="paper"] .panel-toggle { border-radius: 0; border-color: var(--text); background: var(--surface); }
+[data-theme="paper"] .chip, [data-theme="paper"] .tl-pass { border-radius: 999px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+[data-theme="paper"] input[type="range"] { accent-color: var(--signal); }
+[data-theme="paper"] :is(.player-controls, .frame-info, .frame-date) { font-family: var(--font-mono); }

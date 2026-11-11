@@ -1335,3 +1335,70 @@ body::before {
   [data-theme="editorial"] .hero { grid-template-columns: minmax(0, 1fr); }
   [data-theme="editorial"] .hero::after { grid-column: 1; grid-row: 3; min-height: 14rem; border-left: 0; border-top: 1px solid var(--text); }
 }
+
+/* =========================================================
+   MIDNIGHT (default since the second redesign of 11 Nov 2026): the reference was a dark, product-first page: navy ground, one clear blue action, large clean
+   headlines, quiet bordered surfaces, no decoration for its own sake. Colour comes from the sky photo and the data, not from the interface.
+   Contrast (checked by scratch/test_theme.mjs): text on the ground > 15:1, muted text > 8:1, white on the blue action 5.2:1.
+   Same functions, ids, classes and ARIA as every other theme: only tokens and CSS rules differ.
+   ========================================================= */
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --bg: #070B1A; --bg-2: #0B1226; --surface: #0E1730; --raised: #15203F; --field: #0A1128;
+  --border: rgb(148 163 214 / .2); --control-border: #7480A8;
+  --text: #EEF1FB; --text-muted: #A9B3D1; --text-faint: #7F8BB0;
+  --primary: #2563EB; --primary-hover: #1D4FD8;
+  --accent: #7FA8FF; --accent-hi: #A9C4FF; --accent-text: #8DB2FF; --accent-rgb: 127 168 255; --on-accent: #06102A;
+  --accent-2: #56D6EE; --alt-rgb: 86 214 238; --rust: #FF6B6B;
+  --warn: #F5B942; --warn-rgb: 245 185 66; --danger: #FF8A94; --success: #4FD6A0;
+  --bg-rgb: 7 11 26; --surface-rgb: 14 23 48; --text-rgb: 238 241 251;
+  --panel-alpha: .9; --veil-top: .72; --veil-bottom: .94;
+  --radius: 14px; --radius-sm: 8px;
+  --shadow: 0 1px 0 rgb(255 255 255 / .04) inset, 0 18px 40px -24px rgb(0 0 0 / .8);
+  --display: "Space Grotesk", "Inter", system-ui, sans-serif; --font-head: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+[data-theme="midnight"] body { background: var(--bg); }
+[data-theme="midnight"] :is(.stage, .chart) { --bg: #050814; --field: #050814; }
+/* type: large, tight headlines; controls in the plain sans; numbers and metadata in monospace */
+[data-theme="midnight"] :is(h1, h2, h3) { font-family: var(--font-head); font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+[data-theme="midnight"] h2 { font-size: clamp(1.35rem, 1rem + 1vw, 1.9rem); line-height: 1.15; }
+[data-theme="midnight"] p, [data-theme="midnight"] li { text-wrap: pretty; }
+[data-theme="midnight"] :is(.badge, .chip, .cite, .tl-pass, code, kbd, .hero-eyebrow, .hero-credit) { font-family: var(--font-mono); }
+/* surfaces: one hairline border, a soft inner highlight, no glow */
+[data-theme="midnight"] .panel { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+[data-theme="midnight"] :is(.btn, .btn-primary, .chip, .mover-item, .overview-item, .discover-item) { transition: background-color .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease), transform .12s var(--ease); }
+[data-theme="midnight"] :is(.btn, .btn-primary, .chip, .mover-item, .overview-item, .discover-item):hover { transform: none; box-shadow: none; }
+[data-theme="midnight"] .btn:active:not(:disabled) { transform: scale(.98); }
+/* buttons: quiet outline by default, ONE clear blue for every primary action */
+[data-theme="midnight"] .btn { background: rgb(255 255 255 / .04); border: 1px solid var(--control-border); border-radius: var(--radius-sm); color: var(--text); }
+[data-theme="midnight"] .btn:hover:not(:disabled) { background: rgb(255 255 255 / .09); border-color: var(--accent); }
+[data-theme="midnight"] .btn-primary, [data-theme="midnight"] #load-btn { background: var(--primary); border: 1px solid var(--primary); color: #FFFFFF; box-shadow: none; }
+[data-theme="midnight"] .btn-primary:hover:not(:disabled), [data-theme="midnight"] #load-btn:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); box-shadow: none; }
+[data-theme="midnight"] :is(input, select, textarea) { background: var(--field); border: 1px solid var(--control-border); border-radius: var(--radius-sm); color: var(--text); }
+[data-theme="midnight"] :is(input, select, textarea):focus { box-shadow: none; outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+[data-theme="midnight"] :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[data-theme="midnight"] a { text-underline-offset: .15em; }
+/* the banner: a two-column product hero, the sky photo on the right fading into the ground */
+[data-theme="midnight"] .hero { background: var(--bg); min-height: 0; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-rows: auto 1fr; border-bottom: 1px solid var(--border); overflow: hidden; }
+[data-theme="midnight"] .hero::before { display: none; }
+[data-theme="midnight"] .hero::after { position: static; grid-column: 2; grid-row: 2; min-height: 26rem; transform: none; filter: none; z-index: 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 38%); mask-image: linear-gradient(90deg, transparent, #000 38%); }
+[data-theme="midnight"] .hero-top { grid-column: 1 / -1; background: transparent; border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
+[data-theme="midnight"] .hero-title { grid-column: 1; grid-row: 2; width: auto; align-self: center; background: transparent; padding: clamp(1.4rem, 5vw, 4.5rem); position: relative; z-index: 1; }
+[data-theme="midnight"] .hero-title h1 { font-size: clamp(2.2rem, 1.2rem + 3.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.03em; }
+[data-theme="midnight"] :is(.hero-logo, .hero-title, .hero-title :is(h1, p, span), .hero-tag, .hero-nav a) { color: var(--text); }
+[data-theme="midnight"] .hero-title p { color: var(--text-muted); max-width: 44ch; }
+[data-theme="midnight"] .hero-nav { background: rgb(255 255 255 / .05); border: 1px solid var(--border); border-radius: var(--radius-sm); backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-theme="midnight"] .hero-nav a { text-decoration: none; border-radius: 6px; }
+[data-theme="midnight"] .hero-nav a:hover { background: rgb(255 255 255 / .08); color: var(--text); }
+[data-theme="midnight"] .hero-eyebrow { color: var(--text-muted); letter-spacing: .12em; }
+[data-theme="midnight"] .hero-credit { background: rgb(255 255 255 / .05); border: 1px solid var(--border); color: var(--text-muted); }
+[data-theme="midnight"] .hero-cta, [data-theme="midnight"] .hero-cta:hover { color: #FFFFFF; background: var(--primary); border-radius: var(--radius-sm); }
+[data-theme="midnight"] .hero-scroll { display: none; }
+[data-theme="midnight"] .hero .badge { background: rgb(255 255 255 / .06); color: var(--text); border: 1px solid var(--border); border-radius: 999px; }
+@media (max-width: 860px) {
+  [data-theme="midnight"] .hero { grid-template-columns: minmax(0, 1fr); }
+  [data-theme="midnight"] .hero::after { grid-column: 1; grid-row: 3; min-height: 14rem; -webkit-mask-image: linear-gradient(180deg, transparent, #000 40%); mask-image: linear-gradient(180deg, transparent, #000 40%); }
+}
+@media (prefers-reduced-motion: reduce) { [data-theme="midnight"] * { transition: none !important; } }

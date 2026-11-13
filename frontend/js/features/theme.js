@@ -7,8 +7,9 @@
 // in the wrong colours: keep the two in step (the regular expression and the key).
 
 export const STORAGE_KEY = "spherex-blink-theme";
-export const DEFAULT_THEME = "paper";
+export const DEFAULT_THEME = "infrared";
 export const THEMES = [
+  { id: "infrared", label: "Infrared (dark)", scheme: "dark", themeColor: "#0B0F14" },
   { id: "paper", label: "Paper (light)", scheme: "light", themeColor: "#FBFBF9" },
   { id: "midnight", label: "Midnight (navy)", scheme: "dark", themeColor: "#070B1A" },
   { id: "editorial", label: "Editorial (light)", scheme: "light", themeColor: "#F6F4EF" },

@@ -2,6 +2,10 @@
 
 > **This file has two parts**: Part 1 is this repository's own text; **Part 2** (marked "Part 2" below) comes from the branch blink-2.0 of SPHEREx, merged on 10 Nov 2026. See [MERGE_NOTES.md](MERGE_NOTES.md).
 
+## 2026-11-13 — Infrared theme: a new default look (branch `frontend-infrared`, not pushed)
+
+Made in this repository (2.0) on the author's request, after a design review of the 3.0 frontend with the frontend-design checklist (3.0 was not changed). `[data-theme="infrared"]` in `frontend/css/styles.css` is the new default: a dark, neutral instrument in one family of type (Archivo, width axis for the headlines), a single filled button per view in ice white, no all-capitals labels or eyebrows, flat hairline panels, a wider image stage between slimmer side panels, a full-width top bar, and a hero that is the subject itself: the labelled illustration at large size, blinking three times with a ring on the dot that jumps (the signal colour is used for that and for nothing else), then at rest; off under reduced motion. Layout and CSS only: no function, id, label, shortcut or ARIA attribute changed; Paper, Midnight and the other themes are untouched and selectable. `scratch/test_theme.mjs` now expects nine themes and the new default (a meant change). Run: all 44 `scratch/test_*.mjs`, `e2e_smoke`, `a11y_audit --theme infrared`, `release_audit` (all pass). Looked at by eye: the home hero and the first screen of the workspace at 1440 px only; not looked at by eye: the rest of the page, the other pages, mobile.
+
 ## 2026-11-08 — Phase 1 navigation milestone
 
 Imported upstream history through 3f1e538 into the SPHEREx-Blink-2.0 development checkout after checking that the named development remote advertised no refs. The reference repository supplied the baseline. This entry starts the Blink 2.0 progress record.
